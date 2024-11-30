@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Местоположение пропавшего человека</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <style>
+        #map { height: 600px; }
+    </style>
+</head>
+<body>
+    <h2>Местоположение пропавшего человека: {{ missing_person_name }}</h2>
+    <p>{{ missing_person_description }}</p>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Инициализация карты
+        var map = L.map('map').setView([{{ missing_person_lat }}, {{ missing_person_lon }}], 13); // Устанавливаем начальную позицию карты
+
+        // Добавление слоя карты
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Местоположение пропавшего человека
+        var missingPersonLocation = [{{ missing_person_lat }}, {{ missing_person_lon }}]; 
+        var missingPersonMarker = L.marker(missingPersonLocation).addTo(map);
+        missingPersonMarker.bindPopup("<b>Пропавший человек</b><br>{{ missing_person_name }}");
+
+        // Настроим отображение карты
+        map.setView(missingPersonLocation, 13); // Центрируем карту на месте пропавшего человека
+    </script>
+</body>
+</html>

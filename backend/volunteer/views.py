@@ -83,3 +83,23 @@ def get_markers(request):
     markers = Marker.objects.all()
     data = [{"volunteer": marker.volunteer.username, "latitude": marker.latitude, "longitude": marker.longitude, "description": marker.description} for marker in markers]
     return JsonResponse(data, safe=False)
+
+from django.shortcuts import render, get_object_or_404
+from .models import MissingPerson
+
+def show_missing_person_map(request, person_id):
+    # Получаем пропавшего человека по ID
+    missing_person = get_object_or_404(MissingPerson, id=person_id)
+
+    # Местоположение пропавшего человека
+    missing_person_lat = missing_person.last_known_latitude
+    missing_person_lon = missing_person.last_known_longitude
+
+    # Передаем данные в шаблон
+    return render(request, 'missing_people.html', {
+        'missing_person_name': missing_person.name,
+        'missing_person_lat': missing_person_lat,
+        'missing_person_lon': missing_person_lon,
+        'missing_person_description': missing_person.description,
+    })
+

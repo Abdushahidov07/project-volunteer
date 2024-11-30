@@ -11,13 +11,13 @@ class CustomUser(AbstractUser):
         ("валантер", "Валантер"),
         ("Нуждающийся", "Нуждающийся"),
     )
-    image = models.ImageField(upload_to="static/images", null=True, blank=True)
+    # image = models.ImageField(upload_to="static/images", null=True, blank=True)
     age = models.IntegerField(null=True)
     phone_number = models.CharField(max_length=13,null=True)
     gender = models.CharField(max_length=50, choices=CHOICE_GENDER,null=True)
     status = models.CharField(max_length=50, choices=CHOICE_STATUS,null=True)
-    latitude = models.FloatField()
-    longitude = models.FloatField()
+    latitude = models.FloatField(null=True)
+    longitude = models.FloatField(null=True)
 
 class Category(models.Model):
     category_name = models.CharField(max_length=150)
@@ -106,5 +106,18 @@ class Marker(models.Model):
 
     def __str__(self):
         return f"Marker by {self.volunteer.username}"
+
+class MissingPerson(models.Model):
+    name = models.CharField(max_length=255)
+    age = models.IntegerField(null=True, blank=True)
+    gender = models.CharField(max_length=50, choices=CustomUser.CHOICE_GENDER, null=True)
+    description = models.TextField(null=True, blank=True)
+    last_known_latitude = models.FloatField()
+    last_known_longitude = models.FloatField()
+    reported_by = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)  
+    reported_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.reported_time}"
 
 
