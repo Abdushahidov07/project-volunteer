@@ -104,3 +104,203 @@ def show_missing_person_map(request, person_id):
         'missing_person_description': missing_person.description,
     })
 
+
+
+
+
+
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from .models import *
+
+# CATEGORY CRUD
+class CategoryListView(ListView):
+    model = Category
+    template_name = 'category_list.html'
+    context_object_name = 'categories'
+
+
+class CategoryCreateView(CreateView):
+    model = Category
+    template_name = 'category_form.html'
+    fields = ['category_name']
+    success_url = reverse_lazy('category_list')
+
+
+class CategoryUpdateView(UpdateView):
+    model = Category
+    template_name = 'category_form.html'
+    fields = ['category_name']
+    success_url = reverse_lazy('category_list')
+
+
+class CategoryDeleteView(DeleteView):
+    model = Category
+    template_name = 'category_confirm_delete.html'
+    success_url = reverse_lazy('category_list')
+
+
+# APPLY HELP CRUD
+class ApplyHelpListView(ListView):
+    model = ApplyHelp
+    template_name = 'applyhelp_list.html'
+    context_object_name = 'applyhelps'
+
+
+class ApplyHelpCreateView(CreateView):
+    model = ApplyHelp
+    template_name = 'applyhelp_form.html'
+    fields = ['user', 'description', 'image', 'category', 'status', 'is_active']
+    success_url = reverse_lazy('applyhelp_list')
+
+
+class ApplyHelpUpdateView(UpdateView):
+    model = ApplyHelp
+    template_name = 'applyhelp_form.html'
+    fields = ['user', 'description', 'image', 'category', 'status', 'is_active']
+    success_url = reverse_lazy('applyhelp_list')
+
+
+class ApplyHelpDeleteView(DeleteView):
+    model = ApplyHelp
+    template_name = 'applyhelp_confirm_delete.html'
+    success_url = reverse_lazy('applyhelp_list')
+
+
+# APPLICATION CRUD
+class ApplicationListView(ListView):
+    model = Application
+    template_name = 'application_list.html'
+    context_object_name = 'applications'
+
+
+class ApplicationCreateView(CreateView):
+    model = Application
+    template_name = 'application_form.html'
+    fields = ['user', 'applay', 'description', 'status', 'is_active']
+    success_url = reverse_lazy('application_list')
+
+
+class ApplicationUpdateView(UpdateView):
+    model = Application
+    template_name = 'application_form.html'
+    fields = ['user', 'applay', 'description', 'status', 'is_active']
+    success_url = reverse_lazy('application_list')
+
+
+class ApplicationDeleteView(DeleteView):
+    model = Application
+    template_name = 'application_confirm_delete.html'
+    success_url = reverse_lazy('application_list')
+
+
+# CHARITY COMPANY CRUD
+class CharityCompanyListView(ListView):
+    model = CharityCompany
+    template_name = 'charitycompany_list.html'
+    context_object_name = 'charity_companies'
+
+
+class CharityCompanyCreateView(CreateView):
+    model = CharityCompany
+    template_name = 'charitycompany_form.html'
+    fields = ['company_name', 'location', 'descriptions']
+    success_url = reverse_lazy('charitycompany_list')
+
+
+class CharityCompanyUpdateView(UpdateView):
+    model = CharityCompany
+    template_name = 'charitycompany_form.html'
+    fields = ['company_name', 'location', 'descriptions']
+    success_url = reverse_lazy('charitycompany_list')
+
+
+class CharityCompanyDeleteView(DeleteView):
+    model = CharityCompany
+    template_name = 'charitycompany_confirm_delete.html'
+    success_url = reverse_lazy('charitycompany_list')
+
+
+# APPLICATION CHARITY CRUD
+class ApplicationCharityListView(ListView):
+    model = ApplicationCharity
+    template_name = 'applicationcharity_list.html'
+    context_object_name = 'application_charities'
+
+
+class ApplicationCharityCreateView(CreateView):
+    model = ApplicationCharity
+    template_name = 'applicationcharity_form.html'
+    fields = ['user', 'company_charity', 'description', 'status', 'is_active']
+    success_url = reverse_lazy('applicationcharity_list')
+
+
+class ApplicationCharityUpdateView(UpdateView):
+    model = ApplicationCharity
+    template_name = 'applicationcharity_form.html'
+    fields = ['user', 'company_charity', 'description', 'status', 'is_active']
+    success_url = reverse_lazy('applicationcharity_list')
+
+
+
+
+
+
+class ApplicationCharityDeleteView(DeleteView):
+    model = ApplicationCharity
+    template_name = 'applicationcharity_confirm_delete.html'
+    success_url = reverse_lazy('applicationcharity_list')
+
+
+# USER LOCATION CRUD
+class UserLocationListView(ListView):
+    model = UserLocation
+    template_name = 'userlocation_list.html'
+    context_object_name = 'user_locations'
+
+
+class UserLocationCreateView(CreateView):
+    model = UserLocation
+    template_name = 'userlocation_form.html'
+    fields = ['user', 'latitude', 'longitude', 'is_active']
+    success_url = reverse_lazy('userlocation_list')
+
+
+class UserLocationUpdateView(UpdateView):
+    model = UserLocation
+    template_name = 'userlocation_form.html'
+    fields = ['user', 'latitude', 'longitude', 'is_active']
+    success_url = reverse_lazy('userlocation_list')
+
+
+class UserLocationDeleteView(DeleteView):
+    model = UserLocation
+    template_name = 'userlocation_confirm_delete.html'
+    success_url = reverse_lazy('userlocation_list')
+
+
+# MARKER CRUD
+class MarkerListView(ListView):
+    model = Marker
+    template_name = 'marker_list.html'
+    context_object_name = 'markers'
+
+
+class MarkerCreateView(CreateView):
+    model = Marker
+    template_name = 'marker_form.html'
+    fields = ['volunteer', 'latitude', 'longitude', 'description']
+    success_url = reverse_lazy('marker_list')
+
+
+class MarkerUpdateView(UpdateView):
+    model = Marker
+    template_name = 'marker_form.html'
+    fields = ['volunteer', 'latitude', 'longitude', 'description']
+    success_url = reverse_lazy('marker_list')
+
+
+class MarkerDeleteView(DeleteView):
+    model = Marker
+    template_name = 'marker_confirm_delete.html'
+    success_url = reverse_lazy('marker_list')
