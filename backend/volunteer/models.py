@@ -16,8 +16,8 @@ class CustomUser(AbstractUser):
     phone_number = models.CharField(max_length=13,null=True)
     gender = models.CharField(max_length=50, choices=CHOICE_GENDER,null=True)
     status = models.CharField(max_length=50, choices=CHOICE_STATUS,null=True)
-    latitude = models.FloatField()
-    longitude = models.FloatField()
+    latitude = models.FloatField(null=True)
+    longitude = models.FloatField(null=True)
 
 class Category(models.Model):
     category_name = models.CharField(max_length=150)
