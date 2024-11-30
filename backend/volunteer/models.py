@@ -106,3 +106,5 @@ class Marker(models.Model):
 
     def __str__(self):
         return f"Marker by {self.volunteer.username}"
+
+
