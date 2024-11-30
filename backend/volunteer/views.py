@@ -229,10 +229,38 @@ class ApplyHelpDeleteView(LoginRequiredMixin, DeleteView):
         return ApplyHelp.objects.none()
 
 # APPLICATION CRUD
+# class ApplicationListView(ListView):
+#     model = Application
+#     template_name = 'application_list.html'
+#     context_object_name = 'applications'
+
+
 class ApplicationListView(ListView):
     model = Application
     template_name = 'application_list.html'
     context_object_name = 'applications'
+    paginate_by = 10  # Optional: Enables pagination with 10 items per page
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        user_query = self.request.GET.get('user', '').strip()
+        status_query = self.request.GET.get('status', '').strip()
+
+        # Filter the queryset based on search parameters
+        if user_query:
+            queryset = queryset.filter(user__username__icontains=user_query)
+        if status_query:
+            queryset = queryset.filter(status__icontains=status_query)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Include search fields in the context to retain entered values in the form
+        context['search_user'] = self.request.GET.get('user', '')
+        context['search_status'] = self.request.GET.get('status', '')
+        return context
+    
 
 
 class ApplicationCreateView(CreateView):
