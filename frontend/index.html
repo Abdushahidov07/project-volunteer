@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help for everyone</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo"><img src="./img/logo_von.jpg" alt=""
+                    style="width: 100px; height: 100px; margin-top: 0px; border-radius: 80%;"></div>
+            <ul>
+                <li><a href="#home">Главная</a></li>
+                <li><a href="#about">О нас</a></li>
+                <li><a href="#volunteer">Стать волонтёром</a></li>
+                <li><a href="#help">Получить помощь</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+
+            <h1>Помогаем делать Таджикистан лучше</h1>
+            <p>Платформа, объединяющая тех, кто хочет помогать, и тех, кто нуждается в помощи</p>
+            <div class="cta-buttons">
+                <a href="#volunteer" class="btn btn-primary">Хочу помогать</a>
+                <a href="#help" class="btn btn-secondary">Нужна помощь</a>
+            </div>
+
+        </section>
+        <!-- sssss -->
+        <section>
+            <div>
+                <div class="big">
+                    <div class="big1 " style="padding-top: 150px;">
+                        <img src="./img/pic1.jpg" alt="" style="width: 230px; border-radius: 20px;">
+                        <img src="./img/pic4.jpg" alt="" style="width: 230px; border-radius: 20px;">
+                    </div>
+                    <div>
+                        <img src="./img/pic2.jpg" alt="" style="width: 310px; border-radius: 20px;">
+                    </div>
+                    <div class="big2" style="padding-top: 180px;">
+                        <img src="./img/pic3.jpg" alt="" style="width: 450px; border-radius: 20px;">
+                    </div>
+                </div>
+                <div class="big5">
+                    <div class="big3">
+                        <div class="big4">
+                            <p style="font-size: 18px; font-weight: 600;">Кто такой волонтер? </p>
+                            <p style="font-size: 16px; color: gray;">
+                                Волонтеры — это люди, добровольно занимающиеся благотворительной деятельностью без
+                                получения денег и финансовой выгоды. Они готовы пожертвовать свои время, усилия и
+                                навыки, чтобы <br> помочь нуждающимся, поддержать социальные и экологические инициативы,
+                                а
+                                также способствовать общественному благополучию. <br>
+
+                                В Таджикистане движение волонтерских организаций стало активно развиваться в начале
+                                1990-х, в
+                                период социальных и политических перемен. Это время открыло новые возможности для
+                                деятельности независимых общественных организаций и отдельных активистов, чувствующих
+                                свою личную ответственность перед обществом и окружающим миром. 
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+        </section>
+        <!-- ssssss -->
+        <section id="about" class="about">
+            <h2>О нашей платформе</h2>
+            <div class="features">
+                <div class="feature">
+                    <h3>Для волонтёров</h3>
+                    <p>Находите возможности помочь людям в вашем районе</p>
+                    <ul>
+                        <li>Выбирайте задания по интересам</li>
+                        <li>Гибкий график</li>
+                        <li>Помогайте тем, кому это действительно нужно</li>
+                    </ul>
+                </div>
+                <div class="feature">
+                    <h3>Для обращающихся</h3>
+                    <p>Получите помощь от надёжных волонтёров</p>
+                    <ul>
+                        <li>Простая форма заявки</li>
+                        <li>Быстрый отклик</li>
+                        <li>Проверенные волонтёры</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="volunteer" class="volunteer">
+            <h2>Стать волонтёром</h2>
+            <form class="volunteer-form">
+                <div class="form-group">
+                    <label for="name">Имя</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="name">Фамилия</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="name">Возраст</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Телефон</label>
+                    <input type="tel" id="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Пол</label>
+                    <select name="" id="">
+                    <option value="" style="color: gray;"> <p style="color: gray;">Мужской / Женский </p></option>
+                    <option value="">Женский</option>
+                    <option value="">Мужской</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="skills">Навыки</label>
+                    <textarea id="skills" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="email">Password</label>
+                    <input type="password" id="email" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Отправить заявку</button>
+            </form>
+        </section>
+
+        <section id="help" class="help">
+            <h2>Получить помощь</h2>
+            <form class="help-form">
+                <div class="form-group">
+                    <label for="help-name">Имя</label>
+                    <input type="text" id="help-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="help-contact">Контактный телефон</label>
+                    <input type="tel" id="help-contact" required>
+                </div>
+                <div class="form-group">
+                    <label for="help-type">Тип помощи</label>
+                    <select id="help-type" required>
+                        <option value="">Выберите тип помощи</option>
+                        <option value="elderly">Помощь пожилым</option>
+                        <option value="children">Помощь детям</option>
+                        <option value="animals">Помощь животным</option>
+                        <option value="education">Образование</option>
+                        <option value="other">Другое</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="help-description">Описание задачи</label>
+                    <textarea id="help-description" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Отправить заявку</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <p>Email: info@dobrodelo.ru</p>
+                <p>Телефон: +7 (999) 123-45-67</p>
+            </div>
+            <div class="footer-section">
+                <h4>Социальные сети</h4>
+                <div class="social-links">
+                    <a href="#">ВКонтакте</a>
+                    <a href="#">Telegram</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 ДоброДело. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+
+</html>
