@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Местоположение пользователя</title>
+    <style>
+        #map {
+            height: 100vh; /* Высота карты 100% от экрана */
+            width: 100%;   /* Ширина карты 100% */
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script>
+        let map;
+        let userMarker;
+
+        // Функция для инициализации карты
+        function initMap() {
+            // Инициализация карты
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 12,
+                center: { lat: 55.7558, lng: 37.6176 }, // Центр по умолчанию (Москва)
+            });
+
+            // Попытка получить местоположение пользователя
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+
+                        // Проверим полученные координаты в консоли
+                        console.log("Текущее местоположение:", lat, lng);
+
+                        // Центрируем карту на местоположении пользователя
+                        map.setCenter({ lat: lat, lng: lng });
+
+                        // Размещаем маркер на карте для пользователя
+                        if (userMarker) {
+                            userMarker.setMap(null); // Убираем старый маркер, если есть
+                        }
+                        userMarker = new google.maps.Marker({
+                            position: { lat: lat, lng: lng },
+                            map: map,
+                            title: "Ваше местоположение",
+                        });
+
+                        // Отправляем координаты на сервер
+                        saveLocation(lat, lng);
+
+                        // Загрузим местоположения других пользователей
+                        loadUserLocations();
+                    },
+                    function (error) {
+                        alert("Не удалось получить ваше местоположение: " + error.message);
+                    },
+                    {
+                        enableHighAccuracy: true, // Включение точности геолокации
+                        timeout: 5000,             // Таймаут для получения данных
+                        maximumAge: 0             // Не использовать кэшированные данные
+                    }
+                );
+            } else {
+                alert("Ваш браузер не поддерживает Geolocation.");
+            }
+        }
+
+        // Функция для отправки местоположения на сервер
+        function saveLocation(lat, lng) {
+            fetch('/save-location/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')  // Убедитесь, что CSRF-токен передается правильно
+                },
+                body: JSON.stringify({ latitude: lat, longitude: lng })
+            })            
+            .then(response => response.json())
+            .then(data => {
+                console.log('Местоположение сохранено:', data);
+            })
+            .catch(error => {
+                console.error('Ошибка при сохранении местоположения:', error);
+            });
+        }
+        // Функция для загрузки местоположений активных пользователей
+        function loadUserLocations() {
+            fetch('/get-active-user-locations/')  // Измените URL на новый эндпоинт
+                .then(response => response.json())
+                .then(data => {
+                    // Очищаем старые маркеры
+                    if (userMarker) {
+                        userMarker.setMap(null);  // Убираем старый маркер, если есть
+                    }
+
+                    // Для каждого активного пользователя создаем маркер
+                    data.locations.forEach(location => {
+                        const latLng = { lat: location.latitude, lng: location.longitude };
+                        new google.maps.Marker({
+                            position: latLng,
+                            map: map,
+                            title: location.username,  // Имя пользователя в подсказке
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error('Ошибка при получении местоположений пользователей:', error);
+                });
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Инициализация карты после загрузки API
+        function loadMap() {
+            const script = document.createElement("script");
+            script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCx0MQVef_0-g_tanOlCAjcgvQF1rYreks&callback=initMap";
+            script.onerror = function () {
+                alert("Ошибка при загрузке Google Maps API.");
+            };
+            document.head.appendChild(script);
+        }
+
+        window.onload = loadMap;
+
+    </script>
+</body>
+</html>
