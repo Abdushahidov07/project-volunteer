@@ -1,0 +1,208 @@
+/* Основные стили для страницы */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f7fa;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Главная секция (Hero) */
+.hero {
+  background: linear-gradient(135deg, #3a8dff, #6a11cb);
+  color: white;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.hero-content p {
+  font-size: 1.25rem;
+  margin-bottom: 30px;
+}
+
+.search-box {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.date-filters {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.date-input {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.date-input label {
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+.date-input input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.search-btn {
+  background-color: #ff6f61;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+}
+
+.search-btn i {
+  font-size: 1.2rem;
+}
+
+/* Пропавшие люди (Missing Persons) */
+.missing-persons {
+  padding: 40px 20px;
+  background-color: #ffffff;
+  text-align: center;
+}
+
+.missing-persons h2 {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+}
+
+.person-card {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.person-card:hover {
+  transform: translateY(-10px);
+}
+
+.person-image {
+  background-color: #e0e0e0;
+  padding: 50px;
+  text-align: center;
+}
+
+.image-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.person-info {
+  padding: 20px;
+  background-color: white;
+  text-align: left;
+}
+
+.person-info h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.person-info ul {
+  list-style: none;
+  margin-bottom: 20px;
+}
+
+.person-info li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.person-info i {
+  color: #ff6f61;
+}
+
+.description {
+  font-size: 1rem;
+  margin-bottom: 15px;
+  color: #555;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.map-btn, .share-btn {
+  background-color: #3a8dff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.map-btn i, .share-btn i {
+  font-size: 1.2rem;
+}
+
+.no-missing-people {
+  font-size: 1.25rem;
+  color: #888;
+}
+
+/* Пагинация */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px 0;
+}
+
+.pagination a {
+  text-decoration: none;
+  color: #3a8dff;
+  font-size: 1rem;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.pagination a:hover {
+  background-color: #f0f0f0;
+}
+
+/* Анимации */
+[data-aos="fade-up"] {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+[data-aos="fade-up"].aos-animate {
+  opacity: 1;
+  transform: translateY(0);
+}

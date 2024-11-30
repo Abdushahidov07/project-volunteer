@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteer Together</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link rel="stylesheet" href="{% static "/styles/footer.css" %}">
+    <link rel="stylesheet" href="{% static "/styles/header.css" %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">VolunteerHub</div>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#opportunities">Opportunities</a>
+                <a href="#impact">Our Impact</a>
+                <a href="#stories">Stories</a>
+                <a href="#join" class="join-btn">Join Us</a>
+            </div>
+        </nav>
+    </header>
+    <main>
+    {% block content %}
+    {% endblock %}
+    </main>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About VolunteerHub</h4>
+                <p>Connecting passionate individuals with meaningful volunteer opportunities worldwide.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#opportunities">Opportunities</a></li>
+                    <li><a href="#impact">Impact</a></li>
+                    <li><a href="#stories">Stories</a></li>
+                    <li><a href="#join">Join Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Connect With Us</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script type="module" src="/src/main.js"></script>
+    
+<script>
+    AOS.init();
+    var swiper = new Swiper('.swiper-container', {
+        loop: true,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev'
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static "/styles/main.css" %}">
+<main>
+    <section class="hero" id="home">
+        <div class="hero-content" data-aos="fade-up">
+            <h1>Make a Difference Today</h1>
+            <p>Join our community of volunteers and help create positive change in the world</p>
+            <button class="cta-button">Start Volunteering</button>
+        </div>
+        <div class="hero-stats" data-aos="fade-up" data-aos-delay="200">
+            <div class="stat-item">
+                <span class="stat-number">10K+</span>
+                <span class="stat-label">Volunteers</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">500+</span>
+                <span class="stat-label">Projects</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">50+</span>
+                <span class="stat-label">Countries</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="opportunities" id="opportunities">
+        <h2 data-aos="fade-up">Volunteer Opportunities</h2>
+        <div class="swiper opportunities-slider">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="opportunity-card">
+                        <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=500&q=80" alt="Environmental">
+                        <h3>Environmental Protection</h3>
+                        <p>Help preserve our planet for future generations</p>
+                        <a href="#" class="learn-more">Learn More</a>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="opportunity-card">
+                        <img src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=500&q=80" alt="Education">
+                        <h3>Education Support</h3>
+                        <p>Empower through knowledge sharing</p>
+                        <a href="#" class="learn-more">Learn More</a>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="opportunity-card">
+                        <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=500&q=80" alt="Community">
+                        <h3>Community Service</h3>
+                        <p>Build stronger local communities</p>
+                        <a href="#" class="learn-more">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </section>
+
+    <section class="impact" id="impact">
+        <div class="impact-content" data-aos="fade-right">
+            <h2>Our Impact</h2>
+            <div class="impact-grid">
+                <div class="impact-item">
+                    <i class="fas fa-tree"></i>
+                    <h3>1M+ Trees Planted</h3>
+                </div>
+                <div class="impact-item">
+                    <i class="fas fa-book-reader"></i>
+                    <h3>50K+ Students Helped</h3>
+                </div>
+                <div class="impact-item">
+                    <i class="fas fa-hands-helping"></i>
+                    <h3>100K+ Lives Impacted</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stories" id="stories">
+        <h2 data-aos="fade-up">Volunteer Stories</h2>
+        <div class="stories-grid">
+            <div class="story-card" data-aos="fade-up">
+                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&q=80" alt="Sarah">
+                <h3>Sarah's Journey</h3>
+                <p>"Volunteering changed my perspective on life and helped me find my true purpose."</p>
+            </div>
+            <div class="story-card" data-aos="fade-up" data-aos-delay="100">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&q=80" alt="John">
+                <h3>John's Impact</h3>
+                <p>"Teaching children in rural areas has been the most rewarding experience of my life."</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="join" id="join">
+        <div class="join-content" data-aos="zoom-in">
+            <h2>Ready to Make a Difference?</h2>
+            <p>Join our community of passionate volunteers today</p>
+            <form class="join-form">
+                <input type="email" placeholder="Enter your email">
+                <button type="submit" class="cta-button">Join Now</button>
+            </form>
+        </div>
+    </section>
+</main>
+{% endblock content %}

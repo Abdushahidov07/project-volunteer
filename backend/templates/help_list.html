@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -6,8 +8,8 @@
     <title>Лист помощи</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
             margin: 0;
             padding: 0;
         }
@@ -18,37 +20,42 @@
             color: white;
             padding: 20px;
             margin: 0;
+            font-size: 28px;
         }
 
         h2 {
             color: #333;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
         }
 
         form {
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             margin: 20px auto;
             max-width: 600px;
         }
 
         label {
-            font-size: 16px;
+            font-size: 18px;
             margin-right: 10px;
+            color: #333;
         }
 
         select {
-            padding: 8px;
+            padding: 10px;
             font-size: 16px;
             border-radius: 5px;
             border: 1px solid #ccc;
-            width: 200px;
+            width: 220px;
+            margin-bottom: 15px;
         }
 
         button {
-            padding: 10px 20px;
+            padding: 12px 25px;
             background-color: #4CAF50;
             color: white;
             border: none;
@@ -56,6 +63,7 @@
             cursor: pointer;
             font-size: 16px;
             margin-left: 10px;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
@@ -65,7 +73,7 @@
         hr {
             margin-top: 30px;
             border: 0;
-            border-top: 1px solid #ccc;
+            border-top: 1px solid #ddd;
             margin-bottom: 30px;
         }
 
@@ -77,47 +85,58 @@
 
         li {
             background-color: #fff;
-            padding: 15px;
+            padding: 20px;
             margin: 10px 0;
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
+            font-size: 16px;
         }
 
         li strong {
             font-size: 18px;
             color: #333;
+            margin-bottom: 10px;
         }
 
         li img {
             margin-top: 10px;
             border-radius: 5px;
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             object-fit: cover;
         }
 
         .no-apply-helps {
             text-align: center;
             color: #999;
+            font-size: 18px;
         }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
     </style>
 </head>
 <body>
     <h1>Лист помощи</h1>
-    <form method="get" action="{% url 'help_list' %}">
-        <label for="category">Выберите категорию:</label>
-        <select name="category" id="category">
-            <option value="">Все</option>
-            {% for category in categories %}
-                <option value="{{ category.id }}" {% if category.id == request.GET.category %} selected {% endif %}>
-                    {{ category.category_name }}
-                </option>
-            {% endfor %}
-        </select>
-        <button type="submit">Фильтровать</button>
-    </form>
+    <div class="form-container">
+        <form method="get" action="{% url 'help_list' %}">
+            <label for="category">Выберите категорию:</label>
+            <select name="category" id="category">
+                <option value="">Все</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if category.id == request.GET.category %} selected {% endif %}>
+                        {{ category.category_name }}
+                    </option>
+                {% endfor %}
+            </select>
+            <button type="submit">Фильтровать</button>
+        </form>
+    </div>
 
     <hr>
 
@@ -136,3 +155,4 @@
     </ul>
 </body>
 </html>
+{% endblock content %}

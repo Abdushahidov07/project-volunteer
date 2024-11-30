@@ -1,174 +1,105 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Лист пропавших людей</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-        }
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+<link rel="stylesheet" href="{% static '/styles/mainformissing.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-        h1 {
-            text-align: center;
-            background-color: #4CAF50;
-            color: white;
-            padding: 20px;
-            margin: 0;
-        }
+<main>
+    <!-- Hero Section (Главная секция) -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 data-aos="fade-up">Поможем найти пропавших людей</h1>
+            <p data-aos="fade-up" data-aos-delay="200">Каждая минута важна. Вместе мы можем помочь найти тех, кто пропал.</p>
+        </div>
+        <div class="search-box" data-aos="fade-up" data-aos-delay="400">
+            <form method="GET" action="{% url 'missing_person_list' %}">
+                <div class="date-filters">
+                    <div class="date-input">
+                        <label for="dateFrom">Дата с:</label>
+                        <input type="date" name="date_from" id="dateFrom" value="{{ request.GET.date_from }}">
+                    </div>
+                    <div class="date-input">
+                        <label for="dateTo">Дата по:</label>
+                        <input type="date" name="date_to" id="dateTo" value="{{ request.GET.date_to }}">
+                    </div>
+                    <button type="submit" class="search-btn">
+                        <i class="fas fa-search"></i>
+                        Фильтровать
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+    
 
-        h2 {
-            color: #333;
-            margin-bottom: 15px;
-        }
+    <!-- Пропавшие люди (Missing Persons) -->
+    <section id="missing-persons" class="missing-persons">
+        <h2 data-aos="fade-up">Пропавшие люди</h2>
+        <div class="persons-grid">
+            {% for person in missing_people %}
+                <div class="person-card" data-aos="fade-up">
+                    <div class="person-image">
+                        <div class="image-placeholder">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                    <div class="person-info">
+                        <h3>{{ person.name }}</h3>
+                        <ul>
+                            <li><i class="fas fa-user"></i> Возраст: {{ person.age }}</li>
+                            <li><i class="fas fa-venus-mars"></i> Пол: {{ person.get_gender_display }}</li>
+                            <li><i class="fas fa-calendar"></i> Дата пропажи: {{ person.reported_time|date:"d.m.Y H:i" }}</li>
+                        </ul>
+                        <p class="description">{{ person.description }}</p>
+                        <div class="actions">
+                            <a href="{% url "missingpl"  person.id%}", class="map-btn">
+                                <button class="map-btn">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    Посмотреть на карте
+                                </button>
+                            </a>
+                            <button class="share-btn">
+                                <i class="fas fa-share-alt"></i>
+                                Поделиться
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="no-missing-people">Нет пропавших людей по выбранной дате.</p>
+            {% endfor %}
+        </div>
+    </section>
 
-        form {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin: 20px auto;
-            max-width: 600px;
-        }
-
-        label {
-            font-size: 16px;
-            margin-right: 10px;
-        }
-
-        input[type="date"] {
-            padding: 8px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            margin-right: 10px;
-        }
-
-        button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        hr {
-            margin-top: 30px;
-            border: 0;
-            border-top: 1px solid #ccc;
-            margin-bottom: 30px;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        li {
-            background-color: #fff;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        li strong {
-            font-size: 18px;
-            color: #333;
-        }
-
-        .no-missing-people {
-            text-align: center;
-            color: #999;
-        }
-
-        .pagination {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .pagination a {
-            margin: 0 5px;
-            text-decoration: none;
-            color: #4CAF50;
-        }
-
-        .pagination a:hover {
-            text-decoration: underline;
-        }
-
-        .view-map-btn {
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            text-decoration: none;
-        }
-
-        .view-map-btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-    <h1>Лист пропавших людей</h1>
-
-    <form method="get" action="{% url 'missing_person_list' %}">
-        <label for="date_from">Дата с:</label>
-        <input type="date" name="date_from" id="date_from" value="{{ request.GET.date_from }}">
-        
-        <label for="date_to">Дата по:</label>
-        <input type="date" name="date_to" id="date_to" value="{{ request.GET.date_to }}">
-        
-        <button type="submit">Фильтровать</button>
-    </form>
-
-    <hr>
-
-    <h2>Пропавшие люди:</h2>
-    <ul>
-        {% for person in missing_people %}
-            <li>
-                <strong>{{ person.name }}</strong> <br>
-                <strong>Возраст:</strong> {{ person.age }} <br>
-                <strong>Пол:</strong> {{ person.get_gender_display }} <br>
-                <strong>Описание:</strong> {{ person.description }} <br>
-                <strong>Дата пропажи:</strong> {{ person.reported_time|date:"d.m.Y H:i" }} <br>
-                <strong>Местоположение:</strong> {{ person.last_known_latitude }}, {{ person.last_known_longitude }} <br>
-                
-                <!-- Кнопка для перехода на страницу с картой -->
-                <a href="{% url 'get_markers' person.id %}" class="view-map-btn">Посмотреть на карте</a>
-            </li>
-        {% empty %}
-            <p class="no-missing-people">Нет пропавших людей по выбранной дате.</p>
-        {% endfor %}
-    </ul>
-
+    <!-- Пагинация (Pagination) -->
     <div class="pagination">
         {% if missing_people.has_previous %}
             <a href="?page=1&date_from={{ request.GET.date_from }}&date_to={{ request.GET.date_to }}">« Первая</a>
             <a href="?page={{ missing_people.previous_page_number }}&date_from={{ request.GET.date_from }}&date_to={{ request.GET.date_to }}">«</a>
         {% endif %}
-
         <span>Страница {{ missing_people.number }} из {{ missing_people.paginator.num_pages }}</span>
-
         {% if missing_people.has_next %}
             <a href="?page={{ missing_people.next_page_number }}&date_from={{ request.GET.date_from }}&date_to={{ request.GET.date_to }}">»</a>
             <a href="?page={{ missing_people.paginator.num_pages }}&date_from={{ request.GET.date_from }}&date_to={{ request.GET.date_to }}">Последняя »</a>
         {% endif %}
     </div>
-</body>
-</html>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+<script type="module" src="{% static '/js/mainformissinig.js' %}"></script>
+
+<script>
+    AOS.init();
+    var swiper = new Swiper('.swiper-container', {
+        loop: true,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev'
+        }
+    });
+</script>
+
+{% endblock content %}

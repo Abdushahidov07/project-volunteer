@@ -107,7 +107,6 @@
             <!-- Поле для описания -->
             <label for="id_description">Описание:</label>
             {{ form.description }}
-
             <!-- Поле для изображения -->
             <label for="id_image">Изображение (необязательно):</label>
             {{ form.image }}
@@ -130,7 +129,6 @@
             </div>
         </form>
 
-        <!-- Сообщения об ошибках (если они есть) -->
         {% if form.errors %}
             <div class="error-message">
                 <ul>
@@ -143,7 +141,6 @@
             </div>
         {% endif %}
 
-        <!-- Ссылка на страницу списка заявок -->
         <div class="form-footer">
             <a href="{% url 'help_list' %}">Перейти к списку заявок</a>
         </div>
