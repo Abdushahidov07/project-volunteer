@@ -123,7 +123,7 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static/' 
 ]
 
-LOGIN_REDIRECT_URL = 'Home'
+LOGIN_REDIRECT_URL = 'home'
 
 LOGOUT_REDIRECT_URL = 'login'
 

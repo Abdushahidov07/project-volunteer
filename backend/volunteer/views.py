@@ -11,7 +11,46 @@ from django.contrib.auth.signals import user_logged_out
 from django.dispatch import receiver
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseForbidden
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import MissingPerson, SearchGroup, SearchMarker
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+from django.shortcuts import render
+from django.http import JsonResponse
+from .models import Message
+from .serializers import MessageSerializer
+from rest_framework.decorators import api_view
+from django.contrib.auth.models import User
+import json
 
+@api_view(['GET', 'POST'])
+def message_list(request, missing_person_id):
+    if request.method == 'GET':
+        # Получаем все сообщения для определенного пропавшего человека
+        messages = Message.objects.filter(missing_person_id=missing_person_id).order_by('-timestamp')
+        serializer = MessageSerializer(messages, many=True)
+        return JsonResponse({'messages': serializer.data})
+
+    elif request.method == 'POST':
+        # Получаем сообщение из запроса
+        data = json.loads(request.body)
+        text = data.get('message')
+        user = User.objects.get(id=data.get('user_id'))  # Предполагаем, что передается id пользователя
+        missing_person = MissingPerson.objects.get(id=missing_person_id)
+
+        # Создаем новое сообщение
+        new_message = Message.objects.create(
+            text=text,
+            author=user,
+            missing_person=missing_person
+        )
+        
+        # Возвращаем сообщение
+        serializer = MessageSerializer(new_message)
+        return JsonResponse({'message': 'Сообщение отправлено!', 'data': serializer.data})
 
 
 
@@ -30,6 +69,91 @@ class CategoryCreateView(LoginRequiredMixin, CreateView):
     fields = ['category_name']
     success_url = reverse_lazy('category_list')
 
+from django.http import JsonResponse
+from .models import Marker
+
+# def get_markers(request):
+#     if request.user.is_authenticated:
+#         markers = Marker.objects.filter(user=request.user)
+#         data = [{"volunteer": marker.user.username, "latitude": marker.latitude, "longitude": marker.longitude, "description": marker.description} for marker in markers]
+#         return JsonResponse({'markers': data})
+#     else:
+#         return JsonResponse({'error': 'Не авторизован'}, status=403)
+
+
+def get_all_markers(request):
+    markers = Marker.objects.all()
+    marker_data = [{
+        'latitude': marker.latitude,
+        'longitude': marker.longitude,
+        'user': marker.user.username,
+        'missing_person_id': marker.missing_person.id if marker.missing_person else None,  # Пример: передаем только ID пропавшего человека
+        'missing_person_name': marker.missing_person.name if marker.missing_person else None,  # Или передаем имя пропавшего человека
+        'created_at': marker.created_at.strftime('%Y-%m-%d %H:%M:%S')
+    } for marker in markers]
+
+    return JsonResponse({'markers': marker_data})
+
+@csrf_exempt
+@login_required
+def save_marker(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            lat = data.get('latitude')
+            lng = data.get('longitude')
+            missing_person_id = data.get('missing_person_id')  # передаем id пропавшего человека
+
+            if missing_person_id:
+                # Проверяем существование пропавшего человека
+                missing_person = MissingPerson.objects.get(id=missing_person_id)
+
+                # Создаем маркер для текущего пользователя и привязываем к пропавшему человеку
+                marker = Marker.objects.create(
+                    latitude=lat,
+                    longitude=lng,
+                    user=request.user,  # текущий авторизованный пользователь
+                    missing_person=missing_person  # Связываем с пропавшим человеком
+                )
+                return JsonResponse({'message': 'Метка сохранена'})
+            else:
+                return JsonResponse({'error': 'ID пропавшего человека не предоставлен'}, status=400)
+        except MissingPerson.DoesNotExist:
+            return JsonResponse({'error': 'Пропавший человек с таким ID не найден'}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    return JsonResponse({'error': 'Неверный запрос'}, status=400)
+
+@csrf_exempt
+@login_required
+def remove_marker(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        lat = data.get('latitude')
+        lng = data.get('longitude')
+
+        try:
+            marker = Marker.objects.get(latitude=lat, longitude=lng, user=request.user)
+            marker.delete()  # Удаляем метку
+            return JsonResponse({'message': 'Метка удалена'})
+        except Marker.DoesNotExist:
+            return JsonResponse({'error': 'Метка не найдена'}, status=404)
+    return JsonResponse({'error': 'Неверный запрос'}, status=400)
+
+
+from django.http import JsonResponse
+from .models import Marker
+
+from django.http import JsonResponse
+from .models import Marker
+
+def get_markers(request):
+    if request.user.is_authenticated:
+        markers = Marker.objects.all()
+        data = [{"User": marker.user.username, "latitude": marker.latitude, "longitude": marker.longitude,} for marker in markers]
+        return JsonResponse({'markers': data})
+    else:
+        return JsonResponse({'error': 'Не авторизован'}, status=403)
 
 @receiver(user_logged_out)
 def user_logged_out_handler(sender, request, user, **kwargs):
@@ -54,30 +178,89 @@ def get_active_user_locations(request):
 
 def login(request):
     return redirect("accounts/login")
+    
 
+
+
+@login_required
+def view_missing_person(request, person_id):
+    missing_person = get_object_or_404(MissingPerson, id=person_id)
+    search_group = None
+
+    try:
+        search_group = SearchGroup.objects.get(missing_person=missing_person, user=request.user)
+    except SearchGroup.DoesNotExist:
+        pass  # Пользователь не состоит в группе поиска
+
+    user_location = UserLocation.objects.filter(user=request.user, is_active=True)
+    return render(request, 'missing_person.html', {
+        'missing_person': missing_person,
+        'search_group': search_group,
+        'user_location': user_location
+    })
+
+
+
+@login_required
+def join_search_group(request, person_id):
+    missing_person = get_object_or_404(MissingPerson, id=person_id)
+
+    # Если пользователь еще не состоит в группе поиска, создаем новую запись
+    if not SearchGroup.objects.filter(missing_person=missing_person, user=request.user).exists():
+        SearchGroup.objects.create(missing_person=missing_person, user=request.user)
+
+    return redirect('view_missing_person', person_id=person_id)
+
+
+@login_required
+def save_search_marker(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        latitude = data.get('latitude')
+        longitude = data.get('longitude')
+        missing_person_id = data.get('missing_person_id')
+
+        if latitude is not None and longitude is not None and missing_person_id:
+            missing_person = get_object_or_404(MissingPerson, id=missing_person_id)
+            search_group = get_object_or_404(SearchGroup, missing_person=missing_person, user=request.user)
+
+            # Создаем новую метку на карте
+            SearchMarker.objects.create(
+                search_group=search_group,
+                latitude=latitude,
+                longitude=longitude
+            )
+
+            return JsonResponse({'message': 'Метка сохранена!'}, status=200)
+
+        return JsonResponse({'error': 'Недостаточно данных!'}, status=400)
+
+    return JsonResponse({'error': 'Неверный метод запроса!'}, status=405)
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+from django.utils import timezone
+from .models import UserLocation
 
 @csrf_exempt
 def save_location(request):
     if request.method == 'POST':
         try:
-            # Получаем данные из запроса
             data = json.loads(request.body)
             latitude = data.get('latitude')
             longitude = data.get('longitude')
 
             if latitude is not None and longitude is not None:
-                # Получаем все записи для текущего пользователя
                 user_locations = UserLocation.objects.filter(user=request.user)
                 
                 if user_locations.exists():
-                    # Если запись уже существует, обновляем её
-                    user_location = user_locations.first()  # Берем первую запись, можно применить другие фильтры
+                    user_location = user_locations.first()
                     user_location.latitude = latitude
                     user_location.longitude = longitude
                     user_location.timestamp = timezone.now()
                     user_location.save()
                 else:
-                    # Если записей нет, создаем новую
                     user_location = UserLocation(user=request.user, latitude=latitude, longitude=longitude)
                     user_location.timestamp = timezone.now()
                     user_location.save()
@@ -104,10 +287,10 @@ def get_volunteers(request):
     data = [{"name": volunteer.username, "latitude": volunteer.latitude, "longitude": volunteer.longitude} for volunteer in volunteers]
     return JsonResponse(data, safe=False)
 
-def get_markers(request):
-    markers = Marker.objects.all()
-    data = [{"volunteer": marker.volunteer.username, "latitude": marker.latitude, "longitude": marker.longitude, "description": marker.description} for marker in markers]
-    return JsonResponse(data, safe=False)
+# def get_markers(request):
+#     markers = Marker.objects.all()
+#     data = [{"volunteer": marker.volunteer.username, "latitude": marker.latitude, "longitude": marker.longitude, "description": marker.description} for marker in markers]
+#     return JsonResponse(data, safe=False)
 
 from django.shortcuts import render, get_object_or_404
 from .models import MissingPerson

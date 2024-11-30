@@ -17,11 +17,17 @@
         <nav class="nav">
             <div class="logo">VolunteerHub</div>
             <div class="nav-links">
-                <a href="#home">Home</a>
-                <a href="#opportunities">Opportunities</a>
+                <a href="{% url "home" %}">Home</a>
+                <li><a href="{% url "missing_person_list" %}">List missing</a></li>
                 <a href="#impact">Our Impact</a>
                 <a href="#stories">Stories</a>
-                <a href="#join" class="join-btn">Join Us</a>
+                {% if user.is_authenticated %}
+                    <a href="accounts/logout" class="join-btn">Log out</a>
+                {% else %}
+                    <a href="{% url "login" %}" class="join-btn">Log in</a>
+                {% endif %}
+                <img src="{% static "images/user.jpg" %}" alt="image" style="width: 60px; height: 60px; border-radius: 50%;">
+                <a href="">{{user.username}}</a>
             </div>
         </nav>
     </header>
@@ -38,7 +44,7 @@
             <div class="footer-section">
                 <h4>Quick Links</h4>
                 <ul>
-                    <li><a href="#opportunities">Opportunities</a></li>
+                    <li><a href="{% url "missing_person_list" %}">List missing</a></li>
                     <li><a href="#impact">Impact</a></li>
                     <li><a href="#stories">Stories</a></li>
                     <li><a href="#join">Join Us</a></li>

@@ -7,7 +7,11 @@
         <div class="hero-content" data-aos="fade-up">
             <h1>Make a Difference Today</h1>
             <p>Join our community of volunteers and help create positive change in the world</p>
-            <button class="cta-button">Start Volunteering</button>
+            {% if user.is_authenticated %}
+                {% comment %} <button class="cta-button"></button> {% endcomment %}
+            {% else %}
+                <button class="cta-button">Start Volunteering</button>
+            {% endif %}
         </div>
         <div class="hero-stats" data-aos="fade-up" data-aos-delay="200">
             <div class="stat-item">

@@ -1,0 +1,356 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ missing_person.name }} - Пропавший человек</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCx0MQVef_0-g_tanOlCAjcgvQF1rYreks&callback=initMap" async defer></script>
+    <style>
+        /* Основные стили */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+
+        /* Главный контейнер */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin-top: 120px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 30px;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        /* Стили для карты */
+        #map {
+            height: 500px;
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        /* Кнопки */
+        button {
+            background-color: #007bff;
+            color: white;
+            font-size: 18px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Мобильные стили */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            p {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Здесь будет импортирован header -->
+    {% block header %}{% endblock %}
+
+    <div class="container">
+        <h1>{{ missing_person.name }}</h1>
+        <p>Возраст: {{ missing_person.age }}</p>
+        <p>Описание: {{ missing_person.description }}</p>
+
+        <h2>Последнее известное местоположение:</h2>
+        <p>Широта: {{ missing_person.last_known_latitude }}, Долгота: {{ missing_person.last_known_longitude }}</p>
+
+        <div id="map"></div>
+
+        {% if not search_group %}
+            <button id="join-group-button">Вступить в группу поиска</button>
+        {% else %}
+            <p>Вы участвуете в группе поиска для этого человека.</p>
+        {% endif %}
+    </div>
+
+    <!-- Здесь будет импортирован footer -->
+    {% block footer %}{% endblock %}
+
+    <script>
+        let map;
+        let userMarker;
+        let missingPersonMarker;
+        let userMarkers = []; // Массив для хранения всех маркеров пользователя
+        let markersData = [];  // Массив для хранения информации о созданных маркерах
+
+        // Функция для инициализации карты
+        function initMap() {
+            const center = { lat: {{ missing_person.last_known_latitude }}, lng: {{ missing_person.last_known_longitude }} };
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 10,
+                center: center,
+            });
+
+            // Добавление метки для пропавшего человека
+            missingPersonMarker = new google.maps.Marker({
+                position: center,
+                map: map,
+                title: 'Последнее место пропавшего',
+                icon: {
+                    url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
+                }
+            });
+
+            // Добавление обработчика для клика по метке пропавшего человека
+            missingPersonMarker.addListener('click', function() {
+                missingPersonMarker.setMap(null);  // Удаление метки с карты
+            });
+
+            // Если местоположение пользователя существует, отображаем его на карте
+            {% if user_location %}
+                userMarker = new google.maps.Marker({
+                    position: { lat: {{ user_location.latitude }}, lng: {{ user_location.longitude }} },
+                    map: map,
+                    title: 'Ваше местоположение',
+                    icon: {
+                        url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"  // Иконка для пользователя
+                    }
+                });
+            {% endif %}
+
+            // Попытка получить местоположение пользователя
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+
+                        // Центрируем карту на местоположении пользователя
+                        map.setCenter({ lat: lat, lng: lng });
+
+                        // Размещаем маркер для пользователя
+                        if (userMarker) {
+                            userMarker.setMap(null); // Убираем старый маркер, если есть
+                        }
+                        userMarker = new google.maps.Marker({
+                            position: { lat: lat, lng: lng },
+                            map: map,
+                            title: "Ваше местоположение",
+                            icon: {
+                                url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                            }
+                        });
+
+                        // Отправляем координаты на сервер
+                        saveLocation(lat, lng);
+                    },
+                    function(error) {
+                        alert("Не удалось получить ваше местоположение: " + error.message);
+                    },
+                    {
+                        enableHighAccuracy: true, // Включение точности геолокации
+                        timeout: 5000,             // Таймаут для получения данных
+                        maximumAge: 0             // Не использовать кэшированные данные
+                    }
+                );
+            } else {
+                alert("Ваш браузер не поддерживает Geolocation.");
+            }
+
+            // Загружаем все маркеры с сервера и отображаем их на карте
+            loadMarkers();
+
+            // Обработчик клика по карте для добавления маркера
+            google.maps.event.addListener(map, 'click', function(event) {
+                addMarker(event.latLng);
+            });
+        }
+
+        // Функция для добавления маркера на карту
+        function addMarker(location) {
+            // Добавление маркера на карту
+            const marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                title: 'Это место проверенно в радиусе 1км проверенно:{{user.username}}',
+            });
+
+            // Добавляем маркер в массив для возможного управления
+            userMarkers.push(marker);
+
+            // Сохраняем информацию о маркере
+            markersData.push({
+                lat: location.lat(),
+                lng: location.lng(),
+                user_id: {{ user.id }}  // ID текущего пользователя
+            });
+
+            // При клике на маркер его можно удалить
+            marker.addListener('click', function() {
+                // Проверка, что удалять может только тот пользователь, который создал маркер
+                const markerData = markersData.find(marker => marker.lat === location.lat() && marker.lng === location.lng());
+                if (markerData && markerData.user_id === {{ user.id }}) {
+                    marker.setMap(null);  // Удаление метки с карты
+                    removeMarkerFromServer(location.lat(), location.lng());  // Удаление с сервера
+                } else {
+                    alert("Вы не можете удалить этот маркер, так как не создали его.");
+                }
+            });
+
+            // Отправляем метку на сервер
+            saveMarkerLocation(location.lat(), location.lng());
+        }
+
+        // Функция для отправки координат маркера на сервер
+        function saveMarkerLocation(lat, lng) {
+            fetch('/save-marker/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({
+                    latitude: lat,
+                    longitude: lng,
+                    missing_person_id: {{ missing_person.id }},  // ID пропавшего человека
+                    user_id: {{ user.id }}  // ID текущего пользователя
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message || data.error);
+            })
+            .catch(error => {
+                console.error('Ошибка при сохранении метки:', error);
+            });
+        }
+
+        // Функция для удаления метки с сервера
+        function removeMarkerFromServer(lat, lng) {
+            fetch('/remove-marker/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({
+                    latitude: lat,
+                    longitude: lng,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message || data.error);
+            })
+            .catch(error => {
+                console.error('Ошибка при удалении метки:', error);
+            });
+        }
+
+        // Функция для загрузки маркеров с сервера
+        function loadMarkers() {
+            fetch('/get-markers/', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                data.markers.forEach(markerData => {
+                    const marker = new google.maps.Marker({
+                        position: { lat: markerData.latitude, lng: markerData.longitude },
+                        map: map,
+                        title: 'Это место проверенно в радиусе 1км',
+                        url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png",  
+                    });
+
+                    // При клике на маркер его можно удалить
+                    marker.addListener('click', function() {
+                        // Проверяем, кто создал маркер
+                        if (markerData.user_id === {{ user.id }}) {
+                            marker.setMap(null);  // Удаление метки с карты
+                            removeMarkerFromServer(markerData.latitude, markerData.longitude);  // Удаление с сервера
+                        } else {
+                            alert("Вы не можете удалить этот маркер, так как не создали его.");
+                        }
+                    });
+                });
+            })
+            .catch(error => {
+                console.error('Ошибка при загрузке маркеров:', error);
+            });
+        }
+
+        // Функция для получения значения CSRF-токена
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Обновляем местоположение каждые 30 секунд
+        setInterval(function() {
+            if (userMarker) {
+                userMarker.setMap(null);  // Убираем старый маркер
+            }
+            initMap();  // Перезагружаем карту с новым местоположением
+        }, 30000);  // 30000 мс = 30 секунд
+    </script>
+</body>
+</html>
+
+{% endblock content %}

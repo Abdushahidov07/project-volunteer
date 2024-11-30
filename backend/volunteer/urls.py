@@ -4,15 +4,20 @@ from .views import*
 from . import views
 
 urlpatterns = [
-    path("", views.login, name="login"),
-    path("home", views.Home, name="Home"),
+    path("login", views.login, name="login"),
+    path("", views.Home, name="overview"),
+    path("home", views.Home, name="home"),
     path('index', views.index, name='index'),
     path('volunteers/', views.get_volunteers, name='get_volunteers'),
     path('markers/', views.get_markers, name='get_markers'),
     path('missingpl/<int:person_id>', views.show_missing_person_map, name='missingpl'),
     path('save-location/', views.save_location, name='save_location'),
     path('get-user-locations/', views.get_active_user_locations, name='get_user_locations'),
-    # CATEGORY URLS
+    path('save-marker/', views.save_marker, name='save_marker_location'),
+    path('remove-marker/', views.remove_marker, name='remove_marker_location'),
+    path('messages/<int:missing_person_id>/', views.message_list, name='message_list'),
+    path('get-all-markers/', views.get_all_markers, name='get_all_markers'),
+    path('get-markers/', views.get_markers, name='get_markers'),
     path('categories/', CategoryListView.as_view(), name='category_list'),
     path('categories/create/', CategoryCreateView.as_view(), name='category_create'),
     path('categories/<int:pk>/update/', CategoryUpdateView.as_view(), name='category_update'),
@@ -52,5 +57,9 @@ urlpatterns = [
     path('markers/create/', MarkerCreateView.as_view(), name='marker_create'),
     path('markers/<int:pk>/update/', MarkerUpdateView.as_view(), name='marker_update'),
     path('markers/<int:pk>/delete/', MarkerDeleteView.as_view(), name='marker_delete'),
+
+    path('missing-person/<int:person_id>/', views.view_missing_person, name='view_missing_person'),
+    path('missing-person/<int:person_id>/join/', views.join_search_group, name='join_search_group'),
+    path('save-marker/', views.save_search_marker, name='save_search_marker'),
     path('missing_people/', MissingPersonListView.as_view(), name='missing_person_list'),
 ]

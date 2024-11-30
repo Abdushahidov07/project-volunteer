@@ -1,40 +1,119 @@
-{% extends "base.html" %}
-{% load static %}
-{% block content %}
-<link rel="stylesheet" href="{% static "/styles/mainformap.css" %}">
-    <div class="container">
-        <div class="header">
-            Последнее местоположение пропавшего человека
-        </div>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пропавший человек: {{ missing_person_name }}</title>
+    
+    <!-- Подключение стилей Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    
+    <!-- Подключение шрифта Google Fonts для стиля -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
-        <h2>{{ missing_person_name }}</h2>
-        <p>{{ missing_person_description }}</p>
+    <style>
+        /* Основной стиль страницы */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: #333;
+        }
 
-        <div id="map"></div>
+        /* Стиль заголовков */
+        h1 {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
 
-        <div class="footer">
-            <p>Вы можете помочь! Для получения дополнительной информации обратитесь к органам правопорядка или через наши ресурсы.</p>
-            <p><a href="mailto:support@example.com">Связаться с нами</a></p>
-        </div>
+        h2 {
+            font-size: 1.5rem;
+            color: #34495e;
+        }
+
+        /* Контейнер для информации о человеке */
+        .info-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 90%;
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+
+        .info-container p {
+            font-size: 1rem;
+            margin-bottom: 12px;
+        }
+
+        .info-container p strong {
+            color: #2c3e50;
+        }
+
+        /* Стили для карты */
+        #map {
+            width: 80%;
+            height: 400px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .info-container {
+                width: 95%;
+            }
+
+            #map {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Пропавший человек: {{ missing_person_name }}</h1>
+
+    <!-- Информация о пропавшем человеке -->
+    <div class="info-container">
+        <p><strong>Описание:</strong> {{ missing_person_description }}</p>
+        <p><strong>Возраст:</strong> {{ missing_person.age }} лет</p>
+        <p><strong>Пол:</strong> {{ missing_person.gender }}</p>
+        <p><strong>Время последнего сообщения:</strong> {{ missing_person.reported_time|date:"d.m.Y H:i" }}</p>
     </div>
+
+    <h2>Местоположение пропавшего человека</h2>
+
+    <!-- Карта с маркером -->
+    <div id="map"></div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
-        // Инициализация карты
-        var map = L.map('map').setView([{{ missing_person_lat }}, {{ missing_person_lon }}], 13); // Устанавливаем начальную позицию карты
+        // Инициализация карты с координатами пропавшего человека
+        var map = L.map('map').setView([{{ missing_person_lat }}, {{ missing_person_lon }}], 13);
 
-        // Добавление слоя карты
+        // Добавление тайлов карты (OpenStreetMap)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // Местоположение пропавшего человека
-        var missingPersonLocation = [{{ missing_person_lat }}, {{ missing_person_lon }}]; 
-        var missingPersonMarker = L.marker(missingPersonLocation).addTo(map);
-        missingPersonMarker.bindPopup("<b>Пропавший человек</b><br>{{ missing_person_name }}");
-
-        // Настроим отображение карты
-        map.setView(missingPersonLocation, 13); // Центрируем карту на месте пропавшего человека
+        // Добавление маркера на карту для пропавшего человека
+        L.marker([{{ missing_person_lat }}, {{ missing_person_lon }}]).addTo(map)
+            .bindPopup("<b>{{ missing_person_name }}</b><br>Описание: {{ missing_person_description }}")
+            .openPopup();
     </script>
 
-{% endblock content %}
+</body>
+</html>

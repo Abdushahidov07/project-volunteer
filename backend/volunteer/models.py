@@ -89,7 +89,6 @@ class ApplicationCharity(models.Model):
     
 
 
-
 class UserLocation(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE) 
     latitude = models.FloatField() 
@@ -101,14 +100,6 @@ class UserLocation(models.Model):
         return f'{self.user.username} - {self.latitude}, {self.longitude}'
     
     
-class Marker(models.Model):
-    volunteer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    latitude = models.FloatField()
-    longitude = models.FloatField()
-    description = models.TextField()
-
-    def __str__(self):
-        return f"Marker by {self.volunteer.username}"
 
 class MissingPerson(models.Model):
     name = models.CharField(max_length=255)
@@ -122,3 +113,43 @@ class MissingPerson(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.reported_time}"
+
+class Message(models.Model):
+    text = models.TextField()  # Текст сообщения
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)  # Пользователь, который отправил сообщение
+    missing_person = models.ForeignKey('MissingPerson', on_delete=models.CASCADE)  # Кому принадлежит пропавший человек
+    timestamp = models.DateTimeField(auto_now_add=True)  # Время отправки сообщения
+
+    def __str__(self):
+        return f"Сообщение от {self.author.username} - {self.text[:30]}..."
+
+class Marker(models.Model):
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    missing_person = models.ForeignKey(MissingPerson, on_delete=models.CASCADE, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+
+    def __str__(self):
+        return f"Marker by {self.user.username}"
+
+
+
+class SearchGroup(models.Model):
+    missing_person = models.ForeignKey(MissingPerson, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    join_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Search group for {self.missing_person.name} by {self.user.username}"
+
+
+class SearchMarker(models.Model):
+    search_group = models.ForeignKey(SearchGroup, on_delete=models.CASCADE)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    description = models.TextField(null=True, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Marker by {self.search_group.user.username} for {self.search_group.missing_person.name}"
