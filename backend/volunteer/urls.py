@@ -28,7 +28,6 @@ urlpatterns = [
     path('applications/create/', ApplicationCreateView.as_view(), name='application_create'),
     path('applications/<int:pk>/update/', ApplicationUpdateView.as_view(), name='application_update'),
     path('applications/<int:pk>/delete/', ApplicationDeleteView.as_view(), name='application_delete'),
-
     # CHARITY COMPANY URLS
     path('charitycompanies/', CharityCompanyListView.as_view(), name='charitycompany_list'),
     path('charitycompanies/create/', CharityCompanyCreateView.as_view(), name='charitycompany_create'),

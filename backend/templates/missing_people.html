@@ -6,13 +6,89 @@
     <title>Местоположение пропавшего человека</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
     <style>
-        #map { height: 600px; }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2em;
+            color: #333;
+            margin-top: 20px;
+        }
+
+        p {
+            text-align: center;
+            font-size: 1.2em;
+            color: #666;
+            margin: 10px 0;
+        }
+
+        #map {
+            height: 600px;
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 10px 10px 0 0;
+            font-size: 24px;
+        }
+
+        .footer {
+            text-align: center;
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 0 0 10px 10px;
+            font-size: 14px;
+            color: #888;
+        }
+
+        .footer a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-    <h2>Местоположение пропавшего человека: {{ missing_person_name }}</h2>
-    <p>{{ missing_person_description }}</p>
-    <div id="map"></div>
+    <div class="container">
+        <div class="header">
+            Последнее местоположение пропавшего человека
+        </div>
+
+        <h2>{{ missing_person_name }}</h2>
+        <p>{{ missing_person_description }}</p>
+
+        <div id="map"></div>
+
+        <div class="footer">
+            <p>Вы можете помочь! Для получения дополнительной информации обратитесь к органам правопорядка или через наши ресурсы.</p>
+            <p><a href="mailto:support@example.com">Связаться с нами</a></p>
+        </div>
+    </div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>

@@ -157,7 +157,7 @@ class ApplyHelpCreateView(CreateView):
     model = ApplyHelp
     template_name = 'applyhelp_form.html'
     fields = ['user', 'description', 'image', 'category', 'status', 'is_active']
-    success_url = reverse_lazy('applyhelp_list')
+    success_url = reverse_lazy('help_list')
 
 
 class ApplyHelpUpdateView(UpdateView):
