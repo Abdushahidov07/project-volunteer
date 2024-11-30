@@ -95,6 +95,7 @@ def show_missing_person_map(request, person_id):
     missing_person_lat = missing_person.last_known_latitude
     missing_person_lon = missing_person.last_known_longitude
 
+
     # Передаем данные в шаблон
     return render(request, 'missing_people.html', {
         'missing_person_name': missing_person.name,
