@@ -1,16 +1,13 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from .models import Volunteer, Marker
+from .models import *
 import json
-from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import UserLocation
 from django.utils import timezone
-from django.http import JsonResponse
-from .models import UserLocation
 from django.contrib.auth.signals import user_logged_out
 from django.dispatch import receiver
-from .models import UserLocation
+
 
 @receiver(user_logged_out)
 def user_logged_out_handler(sender, request, user, **kwargs):
@@ -76,12 +73,13 @@ def save_location(request):
 def index(request):
     return render(request, 'index.html')
 
+
 def get_volunteers(request):
-    volunteers = Volunteer.objects.all()
-    data = [{"name": volunteer.name, "latitude": volunteer.latitude, "longitude": volunteer.longitude} for volunteer in volunteers]
+    volunteers = CustomUser.objects.filter(status ="валантер")
+    data = [{"name": volunteer.username, "latitude": volunteer.latitude, "longitude": volunteer.longitude} for volunteer in volunteers]
     return JsonResponse(data, safe=False)
 
 def get_markers(request):
     markers = Marker.objects.all()
-    data = [{"volunteer": marker.volunteer.name, "latitude": marker.latitude, "longitude": marker.longitude, "description": marker.description} for marker in markers]
+    data = [{"volunteer": marker.volunteer.username, "latitude": marker.latitude, "longitude": marker.longitude, "description": marker.description} for marker in markers]
     return JsonResponse(data, safe=False)
