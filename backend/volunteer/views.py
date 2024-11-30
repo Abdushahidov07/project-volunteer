@@ -1,3 +1,87 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from .models import Volunteer, Marker
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import UserLocation
+from django.utils import timezone
+from django.http import JsonResponse
+from .models import UserLocation
+from django.contrib.auth.signals import user_logged_out
+from django.dispatch import receiver
+from .models import UserLocation
 
-# Create your views here.
+@receiver(user_logged_out)
+def user_logged_out_handler(sender, request, user, **kwargs):
+    try:
+        user_location = UserLocation.objects.get(user=user)
+        user_location.is_active = False
+        user_location.save()
+    except UserLocation.DoesNotExist:
+        pass
+
+
+def get_active_user_locations(request):
+    active_locations = UserLocation.objects.filter(is_active=True)
+    locations_data = [{
+        'latitude': loc.latitude,
+        'longitude': loc.longitude,
+        'username': loc.user.username,
+    } for loc in active_locations]
+
+    return JsonResponse({'locations': locations_data})
+
+
+def login(request):
+    return redirect("accounts/login")
+
+
+@csrf_exempt
+def save_location(request):
+    if request.method == 'POST':
+        try:
+            # Получаем данные из запроса
+            data = json.loads(request.body)
+            latitude = data.get('latitude')
+            longitude = data.get('longitude')
+
+            if latitude is not None and longitude is not None:
+                # Получаем все записи для текущего пользователя
+                user_locations = UserLocation.objects.filter(user=request.user)
+                
+                if user_locations.exists():
+                    # Если запись уже существует, обновляем её
+                    user_location = user_locations.first()  # Берем первую запись, можно применить другие фильтры
+                    user_location.latitude = latitude
+                    user_location.longitude = longitude
+                    user_location.timestamp = timezone.now()
+                    user_location.save()
+                else:
+                    # Если записей нет, создаем новую
+                    user_location = UserLocation(user=request.user, latitude=latitude, longitude=longitude)
+                    user_location.timestamp = timezone.now()
+                    user_location.save()
+
+                return JsonResponse({'message': 'Местоположение сохранено!'}, status=200)
+            else:
+                return JsonResponse({'error': 'Недостаточно данных!'}, status=400)
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Некорректные данные!'}, status=400)
+
+    return JsonResponse({'error': 'Неверный метод запроса!'}, status=405)
+
+
+def index(request):
+    return render(request, 'index.html')
+
+def get_volunteers(request):
+    volunteers = Volunteer.objects.all()
+    data = [{"name": volunteer.name, "latitude": volunteer.latitude, "longitude": volunteer.longitude} for volunteer in volunteers]
+    return JsonResponse(data, safe=False)
+
+def get_markers(request):
+    markers = Marker.objects.all()
+    data = [{"volunteer": marker.volunteer.name, "latitude": marker.latitude, "longitude": marker.longitude, "description": marker.description} for marker in markers]
+    return JsonResponse(data, safe=False)
