@@ -11,12 +11,6 @@ urlpatterns = [
     path('missingpl/<int:person_id>', views.show_missing_person_map, name='get_markers'),
     path('save-location/', views.save_location, name='save_location'),
     path('get-user-locations/', views.get_active_user_locations, name='get_user_locations'),
-    path("", views.login, name="login"),
-    path('index', views.index, name='index'),
-    path('volunteers/', views.get_volunteers, name='get_volunteers'),
-    path('markers/', views.get_markers, name='get_markers'),
-    path('save-location/', views.save_location, name='save_location'),
-    path('get-user-locations/', views.get_active_user_locations, name='get_user_locations'),
     # CATEGORY URLS
     path('categories/', CategoryListView.as_view(), name='category_list'),
     path('categories/create/', CategoryCreateView.as_view(), name='category_create'),
@@ -24,7 +18,7 @@ urlpatterns = [
     path('categories/<int:pk>/delete/', CategoryDeleteView.as_view(), name='category_delete'),
 
     # APPLY HELP URLS
-    path('applyhelps/', ApplyHelpListView.as_view(), name='applyhelp_list'),
+    path('help_list/', HelpListView.as_view(), name='help_list'),
     path('applyhelps/create/', ApplyHelpCreateView.as_view(), name='applyhelp_create'),
     path('applyhelps/<int:pk>/update/', ApplyHelpUpdateView.as_view(), name='applyhelp_update'),
     path('applyhelps/<int:pk>/delete/', ApplyHelpDeleteView.as_view(), name='applyhelp_delete'),
@@ -58,4 +52,5 @@ urlpatterns = [
     path('markers/create/', MarkerCreateView.as_view(), name='marker_create'),
     path('markers/<int:pk>/update/', MarkerUpdateView.as_view(), name='marker_update'),
     path('markers/<int:pk>/delete/', MarkerDeleteView.as_view(), name='marker_delete'),
+    path('missing_people/', MissingPersonListView.as_view(), name='missing_person_list'),
 ]

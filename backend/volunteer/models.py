@@ -19,8 +19,11 @@ class CustomUser(AbstractUser):
     latitude = models.FloatField(null=True)
     longitude = models.FloatField(null=True)
 
+
 class Category(models.Model):
     category_name = models.CharField(max_length=150)
+    def __str__(self):
+        return self.category_name 
 
 
 class ApplyHelp(models.Model):

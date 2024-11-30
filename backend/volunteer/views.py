@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import *
 import json
 from django.views.decorators.csrf import csrf_exempt
@@ -104,15 +106,6 @@ def show_missing_person_map(request, person_id):
         'missing_person_description': missing_person.description,
     })
 
-
-
-
-
-
-from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from .models import *
-
 # CATEGORY CRUD
 class CategoryListView(ListView):
     model = Category
@@ -140,11 +133,24 @@ class CategoryDeleteView(DeleteView):
     success_url = reverse_lazy('category_list')
 
 
-# APPLY HELP CRUD
-class ApplyHelpListView(ListView):
+
+
+class HelpListView(ListView):
     model = ApplyHelp
-    template_name = 'applyhelp_list.html'
-    context_object_name = 'applyhelps'
+    template_name = 'help_list.html'
+    context_object_name = 'apply_helps'
+    
+    def get_queryset(self):
+        queryset = ApplyHelp.objects.all()
+        category_filter = self.request.GET.get('category', None)
+        if category_filter:
+            queryset = queryset.filter(category__id=category_filter)
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
 
 class ApplyHelpCreateView(CreateView):
@@ -304,3 +310,26 @@ class MarkerDeleteView(DeleteView):
     model = Marker
     template_name = 'marker_confirm_delete.html'
     success_url = reverse_lazy('marker_list')
+
+
+
+class MissingPersonListView(ListView):
+    model = MissingPerson
+    template_name = 'missing_person_list.html'
+    context_object_name = 'missing_people'
+    paginate_by = 10  # Можно настроить, сколько пропавших людей выводить на страницу
+
+    def get_queryset(self):
+        queryset = MissingPerson.objects.all()
+
+        # Получаем фильтр по дате из GET параметров
+        date_from = self.request.GET.get('date_from')
+        date_to = self.request.GET.get('date_to')
+
+        if date_from:
+            queryset = queryset.filter(reported_time__gte=date_from)
+        
+        if date_to:
+            queryset = queryset.filter(reported_time__lte=date_to)
+
+        return queryset
