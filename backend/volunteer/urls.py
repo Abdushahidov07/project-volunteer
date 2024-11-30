@@ -6,6 +6,7 @@ urlpatterns = [
     path('index', views.index, name='index'),
     path('volunteers/', views.get_volunteers, name='get_volunteers'),
     path('markers/', views.get_markers, name='get_markers'),
+    path('missingpl/<int:person_id>', views.show_missing_person_map, name='get_markers'),
     path('save-location/', views.save_location, name='save_location'),
     path('get-user-locations/', views.get_active_user_locations, name='get_user_locations'),
 ]
