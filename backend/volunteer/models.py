@@ -86,6 +86,7 @@ class ApplicationCharity(models.Model):
     
 
 
+
 class UserLocation(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE) 
     latitude = models.FloatField() 
