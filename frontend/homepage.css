@@ -1,0 +1,250 @@
+/* styles.css */
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    line-height: 1.6;
+    background-color: #f9f9f9;
+}
+
+.logoname {
+    font-family: "Lobster", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 30px;
+  }
+  
+nav {
+    width: 100%;
+    display: flex;
+    padding: 10px;
+    /* margin: 0 auto; */
+    /* padding-top: 10px; */
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+  
+    z-index: 1000;
+    background:linear-gradient(to bottom, rgb(224, 224, 187), rgb(12, 8, 202));;
+
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    font-size: 20px;
+    font-weight: 200;
+   
+}
+
+nav a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: color 0.3s;
+    color: white;
+}
+
+nav a:hover {
+    color: yellow;
+    text-decoration: overline;
+}
+
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    margin-top: 50px;
+
+}
+
+.header {
+    height: 400px;
+    background-image: url(./img/bg4.jpg);
+    color: #fff;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.header p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.btn {
+    display: inline-block;
+    background: #a044ff;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 1rem;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.btn:hover {
+    background: #6a3093;
+}
+
+section {
+    padding: 40px 20px;
+    text-align: center;
+    background-color: #fff;
+    margin-bottom: 20px;
+}
+
+section h2 {
+    font-size: 2rem;
+    color: #6a3093;
+    margin-bottom: 20px;
+}
+#missions{
+background-image: url(./img/bg8.jpg);
+width: 97%;
+height: 500px;
+background-repeat: no-repeat;
+background-size: cover;
+
+
+}
+#stories{
+    background-color: #88e4a4;
+}
+#events{
+    background-image: url(./img/bg14.jpg);
+    width: 97%;
+    height: 500px;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+.con{
+    background-color: #d7e49d;
+    padding: 40px;
+    border-radius: 20px;
+}
+#faq{
+    background-image: url(./img/b12.jpg);
+    width: 97%;
+    height: 500px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#news{
+background-color: #98b8f3;
+    width: 97%;
+    height: 500px;
+    
+}
+.missions,
+.news,
+.faq {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.mission,
+.news article,
+.faq .question {
+    background-color: #ffffffc7;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.mission h3,
+.news article h3,
+.faq .question h3 {
+    color: #6a3093;
+    margin-bottom: 10px;
+}
+
+.contact-section {
+    background-color: #f9f9f9;
+}
+
+.contact-section a {
+    color: #6a3093;
+    text-decoration: none;
+}
+
+.contact-section a:hover {
+    text-decoration: underline;
+}
+
+.footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+/* Stories Section */
+.stories {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.story {
+    background-color: #f3f3f3;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+}
+
+/* Events Section */
+.events {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.event {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Partners Section */
+.partners-section ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    text-align: left;
+    background-color: #74b7ddd8;
+    width: 300px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 30px;
+    text-align: start;
+}
+#partners
+{
+background-color: #fad0b4;
+
+}
+#join{
+    background-image: url(./img/bg11.jpg);
+}
+#contact{
+    background:linear-gradient(to bottom, rgb(224, 224, 187), rgb(230, 124, 215));
+}
+.footer{
+    background:linear-gradient(to bottom, rgb(18, 20, 20), rgb(181, 180, 219));;
+}
+#about{
+    background:linear-gradient(to bottom, rgb(252, 252, 252), rgb(147, 147, 187));;
+}
