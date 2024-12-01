@@ -1,13 +1,3 @@
-
-
-
-#Забонҳои тарчумон мекардагӣ 
-🇹🇯
-🇷🇺
-🇺🇸
-
-#Tajik 
-
 # 📌 **Волонтёрони Тоҷикистон | Волонтёры могут всё**
 > **Платформа барои кӯмак ба одамон дар Тоҷикистон.**  
 > Одамони гумшударо пайдо кунед, ба беморон кӯмак кунед ва камбизоатонро дастгирӣ кунед!  
@@ -227,13 +217,6 @@ Join forces with other volunteers to support those in need.
 - 🤝 **Социальная поддержка:**  
   Объединяйтесь с волонтёрами, чтобы поддерживать нуждающихся.
 
-### 🌟 **Пример интерфейса:**
-
-#### 📍 Карта
-![Карта](https://via.placeholder.com/600x300?text=Карта+Таджикистана)
-
-#### 📃 Регистрация волонтёра
-![Регистрация](https://via.placeholder.com/600x300?text=Регистрация+волонтёра)
 
 ---
 
@@ -251,12 +234,6 @@ Join forces with other volunteers to support those in need.
 
 ### 🌟 **Намунаи интерфейс:**
 
-#### 📍 Харита
-![Харита](https://via.placeholder.com/600x300?text=Харитаи+Тоҷикистон)
-
-#### 📃 Сабти номи ихтиёрӣ
-![Сабти ном](https://via.placeholder.com/600x300?text=Сабти+ном)
-
 ---
 
 ## 🇬🇧 **Interface in English**
@@ -273,49 +250,6 @@ Join forces with other volunteers to support those in need.
 
 ### 🌟 **Interface preview:**
 
-#### 📍 Map
-![Map](https://via.placeholder.com/600x300?text=Tajikistan+Map)
-
-#### 📃 Volunteer Registration
-![Registration](https://via.placeholder.com/600x300?text=Volunteer+Registration)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## 🇬🇧 **Interface in English**
 
 ### 📋 **Features:**
@@ -328,10 +262,3 @@ Join forces with other volunteers to support those in need.
 - 🤝 **Social support:**  
   Collaborate with volunteers to help those in need.
 
-### 🌟 **Interface preview:**
-
-#### 📍 Map
-![Map](https://via.placeholder.com/600x300?text=Tajikistan+Map)
-
-#### 📃 Volunteer Registration
-![Registration](https://via.placeholder.com/600x300?text=Volunteer+Registration)
