@@ -20,7 +20,7 @@ urlpatterns = [
     path('remove-marker/', views.remove_marker, name='remove_marker_location'),
     path('messages/<int:missing_person_id>/', views.message_list, name='message_list'),
     path('get-all-markers/', views.get_all_markers, name='get_all_markers'),
-    path('get-markers/', views.get_markers, name='get_markers'),
+    path('get-markers/<int:id>', views.get_markers, name='get_markers'),
     path('categories/', CategoryListView.as_view(), name='category_list'),
     path('categories/create/', CategoryCreateView.as_view(), name='category_create'),
     path('categories/<int:pk>/update/', CategoryUpdateView.as_view(), name='category_update'),
@@ -46,7 +46,7 @@ urlpatterns = [
 
     # APPLICATION CHARITY URLS
     path('applicationcharities/', ApplicationCharityListView.as_view(), name='applicationcharity_list'),
-    path('applicationcharities/create/', ApplicationCharityCreateView.as_view(), name='applicationcharity_create'),
+    path('applicationcharities/create/<int:ok>', ApplicationCharityCreateView.as_view(), name='applicationcharity_create'),
     path('applicationcharities/<int:pk>/update/', ApplicationCharityUpdateView.as_view(), name='applicationcharity_update'),
     path('applicationcharities/<int:pk>/delete/', ApplicationCharityDeleteView.as_view(), name='applicationcharity_delete'),
 
@@ -66,4 +66,5 @@ urlpatterns = [
     path('missing-person/<int:person_id>/join/', views.join_search_group, name='join_search_group'),
     path('save-marker/', views.save_search_marker, name='save_search_marker'),
     path('missing_people/', MissingPersonListView.as_view(), name='missing_person_list'),
+    path("createmissing/", views.MissingPersonCreateView.as_view(), name="createmissing")
 ]

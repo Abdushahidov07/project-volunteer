@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-    <title>Создание заявки на помощь</title>
+    <title>Сохтани ариза барои кӯмак</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         /* General Reset */
@@ -175,7 +175,7 @@
 <body>
 
     <div class="container">
-        <h1>Создание заявки на помощь</h1>
+        <h1>Сохтани ариза барои кӯмак</h1>
 
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
@@ -183,13 +183,13 @@
 
             <!-- Поле для описания -->
             <div class="input-field">
-                <label for="id_description">Описание:</label>
+                <label for="id_description">Тавсиф:</label>
                 {{ form.description }}
             </div>
 
             <!-- Поле для изображения -->
             <div class="input-field">
-                <label for="id_image">Изображение (необязательно):</label>
+                <label for="id_image">Тасвир (ихтиёрӣ):</label>
                 {{ form.image }}
             </div>
 
@@ -201,13 +201,13 @@
 
             <!-- Поле для активности -->
             <div class="input-field">
-                <label for="id_is_active">Активность:</label>
+                <label for="id_is_active">Фаъолият:</label>
                 {{ form.is_active }}
             </div>
 
             <!-- Кнопка отправки формы -->
             <div class="form-footer">
-                <button type="submit">Создать заявку</button>
+                <button type="submit">Создани ариза</button>
             </div>
         </form>
 
@@ -224,7 +224,7 @@
         {% endif %}
 
         <div class="form-footer">
-            <a href="{% url 'help_list' %}">Перейти к списку заявок</a>
+            <a href="{% url 'help_list' %}">Ба рӯйхати аризаҳо гузаштан</a>
         </div>
     </div>
 

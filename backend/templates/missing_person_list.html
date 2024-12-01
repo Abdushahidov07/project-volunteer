@@ -6,26 +6,26 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <main>
-    <!-- Hero Section (Главная секция) -->
+    <!-- Секция Hero (Сарлавҳаи асосӣ) -->
     <section id="home" class="hero" style="margin-top: 130px;">
         <div class="hero-content">
-            <h1 data-aos="fade-up">Поможем найти пропавших людей</h1>
-            <p data-aos="fade-up" data-aos-delay="200" style="font-size: 25px;">Каждая минута важна. Вместе мы можем помочь найти тех, кто пропал.</p>
+            <h1 data-aos="fade-up">Кӯмак мекунем барои ёфтани одамони гумшуда</h1>
+            <p data-aos="fade-up" data-aos-delay="200" style="font-size: 25px;">Ҳар дақиқа муҳим аст. Бо ҳам метавонем кӯмак кунем, ки одамон ёфт шаванд.</p>
         </div>
         <div class="search-box" data-aos="fade-up" data-aos-delay="400">
             <form method="GET" action="{% url 'missing_person_list' %}">
                 <div class="date-filters">
                     <div class="date-input">
-                        <label for="dateFrom" style="color: black;">Дата с:</label>
+                        <label for="dateFrom" style="color: black;">Рӯзи аз:</label>
                         <input type="date" name="date_from" id="dateFrom" value="{{ request.GET.date_from }}">
                     </div>
                     <div class="date-input">
-                        <label for="dateTo" style="color: black;">Дата по:</label>
+                        <label for="dateTo" style="color: black;">Рӯзи то:</label>
                         <input type="date" name="date_to" id="dateTo" value="{{ request.GET.date_to }}">
                     </div>
                     <button type="submit" class="search-btn">
                         <i class="fas fa-search"></i>
-                        Фильтровать
+                        Филтровать
                     </button>
                 </div>
             </form>
@@ -33,9 +33,9 @@
     </section>
     
 
-    <!-- Пропавшие люди (Missing Persons) -->
+    <!-- Одамони гумшуда (Missing Persons) -->
     <section id="missing-persons" class="missing-persons">
-        <h2 data-aos="fade-up">Пропавшие люди</h2>
+        <h2 data-aos="fade-up">Одамони гумшуда</h2>
         <div class="persons-grid">
             {% for person in missing_people %}
                 <div class="person-card" data-aos="fade-up">
@@ -47,27 +47,27 @@
                     <div class="person-info">
                         <h3>{{ person.name }}</h3>
                         <ul>
-                            <li><i class="fas fa-user"></i> Возраст: {{ person.age }}</li>
-                            <li><i class="fas fa-venus-mars"></i> Пол: {{ person.get_gender_display }}</li>
-                            <li><i class="fas fa-calendar"></i> Дата пропажи: {{ person.reported_time|date:"d.m.Y H:i" }}</li>
+                            <li><i class="fas fa-user"></i> Синну сол: {{ person.age }}</li>
+                            <li><i class="fas fa-venus-mars"></i> Ҷинс: {{ person.get_gender_display }}</li>
+                            <li><i class="fas fa-calendar"></i> Рӯзи гум шудан: {{ person.reported_time|date:"d.m.Y H:i" }}</li>
                         </ul>
                         <p class="description">{{ person.description }}</p>
                         <div class="actions">
-                            <a href="{% url "view_missing_person"  person.id%}", class="map-btn">
+                            <a href="{% url "view_missing_person"  person.id%}" class="map-btn">
                                 <button class="map-btn">
                                     <i class="fas fa-map-marker-alt"></i>
-                                    Посмотреть на карте
+                                    Ба харита бинед
                                 </button>
                             </a>
                             <button class="share-btn">
                                 <i class="fas fa-share-alt"></i>
-                                Поделиться
+                                Моштарик кардан
                             </button>
                         </div>
                     </div>
                 </div>
             {% empty %}
-                <p class="no-missing-people">Нет пропавших людей по выбранной дате.</p>
+                <p class="no-missing-people">Одамони гумшуда барои санаи интихобшуда намебошанд.</p>
             {% endfor %}
         </div>
     </section>
@@ -75,13 +75,13 @@
     <!-- Пагинация (Pagination) -->
     <div class="pagination">
         {% if missing_people.has_previous %}
-            <a href="?page=1&date_from={{ request.GET.date_from }}&date_to={{ request.GET.date_to }}">« Первая</a>
+            <a href="?page=1&date_from={{ request.GET.date_from }}&date_to={{ request.GET.date_to }}">« Аввалин</a>
             <a href="?page={{ missing_people.previous_page_number }}&date_from={{ request.GET.date_from }}&date_to={{ request.GET.date_to }}">«</a>
         {% endif %}
-        <span>Страница {{ missing_people.number }} из {{ missing_people.paginator.num_pages }}</span>
+        <span>Саҳифа {{ missing_people.number }} аз {{ missing_people.paginator.num_pages }}</span>
         {% if missing_people.has_next %}
             <a href="?page={{ missing_people.next_page_number }}&date_from={{ request.GET.date_from }}&date_to={{ request.GET.date_to }}">»</a>
-            <a href="?page={{ missing_people.paginator.num_pages }}&date_from={{ request.GET.date_from }}&date_to={{ request.GET.date_to }}">Последняя »</a>
+            <a href="?page={{ missing_people.paginator.num_pages }}&date_from={{ request.GET.date_from }}&date_to={{ request.GET.date_to }}">Охирин »</a>
         {% endif %}
     </div>
 </main>
@@ -101,5 +101,4 @@
         }
     });
 </script>
-
 {% endblock content %}

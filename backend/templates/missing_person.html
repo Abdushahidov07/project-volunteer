@@ -5,7 +5,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>{{ missing_person.name }} - Пропавший человек</title>
+    <title>{{ missing_person.name }} - Шахси гумшуда</title>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCx0MQVef_0-g_tanOlCAjcgvQF1rYreks&callback=initMap" async defer></script>
     <style>
         /* Основные стили */
@@ -69,6 +69,98 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
+        .seekers-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 90%;
+            max-width: 600px;
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+    
+        /* Заголовок секции */
+        .seekers-container h3 {
+            font-size: 1.5rem;
+            color: #34495e;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+        }
+    
+        /* Стиль для каждого участника */
+        .seeker {
+            font-size: 1rem;
+            color: #2c3e50;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            opacity: 0; /* Сначала скрыт */
+            transform: translateY(20px); /* Начальное положение: немного ниже */
+            animation: fadeInUp 0.5s forwards; /* Анимация */
+        }
+    
+        /* Подчеркнутый текст для имени */
+        .seeker strong {
+            font-weight: 600;
+        }
+    
+        /* Стиль для сообщения, если нет людей в поиске */
+        .seekers-container p {
+            font-size: 1rem;
+            color: #95a5a6;
+            font-style: italic;
+            text-align: center;
+            margin-top: 20px;
+        }
+    
+        /* Анимация: плавное появление участников */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0); /* Возвращение на исходное место */
+            }
+        }
+    
+        /* Мобильная адаптация для контейнера */
+        @media (max-width: 768px) {
+            .seekers-container {
+                width: 100%;
+                padding: 15px;
+            }
+    
+            .seeker {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+        }
+    
+        /* Стиль для анимации: каждый элемент появляется по очереди */
+        .seekers-container .seeker:nth-child(1) {
+            animation-delay: 0s;
+        }
+    
+        .seekers-container .seeker:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+    
+        .seekers-container .seeker:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+    
+        .seekers-container .seeker:nth-child(4) {
+            animation-delay: 0.6s;
+        }
+    
+        .seekers-container .seeker:nth-child(5) {
+            animation-delay: 0.8s;
+        }
 
         button:hover {
             background-color: #0056b3;
@@ -101,18 +193,20 @@
 
     <div class="container">
         <h1>{{ missing_person.name }}</h1>
-        <p>Возраст: {{ missing_person.age }}</p>
-        <p>Описание: {{ missing_person.description }}</p>
+        <p>Синну сол: {{ missing_person.age }}</p>
+        <p>Тавсифи: {{ missing_person.description }}</p>
 
-        <h2>Последнее известное местоположение:</h2>
+        <h2>Охирин макони маълум:</h2>
         <p>Широта: {{ missing_person.last_known_latitude }}, Долгота: {{ missing_person.last_known_longitude }}</p>
 
         <div id="map"></div>
 
         {% if not search_group %}
-            <button id="join-group-button">Вступить в группу поиска</button>
+            <a href="{% url "join_search_group" missing_person.id%}" id="join-group-button">
+                <button id="join-group-button">Ба гурӯҳи ҷустуҷӯ ҳамроҳ шавед</button>
+            </a>
         {% else %}
-            <p>Вы участвуете в группе поиска для этого человека.</p>
+            <p>Шумо як қисми гурӯҳи ҷустуҷӯии ин шахс ҳастед.</p>
         {% endif %}
     </div>
 
@@ -138,7 +232,7 @@
             missingPersonMarker = new google.maps.Marker({
                 position: center,
                 map: map,
-                title: 'Последнее место пропавшего',
+                title: 'Ҷои охирини шахси гумшуда',
                 icon: {
                     url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
                 }
@@ -154,7 +248,7 @@
                 userMarker = new google.maps.Marker({
                     position: { lat: {{ user_location.latitude }}, lng: {{ user_location.longitude }} },
                     map: map,
-                    title: 'Ваше местоположение',
+                    title: 'Ҷойгиршавии шумо',
                     icon: {
                         url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"  // Иконка для пользователя
                     }
@@ -178,7 +272,7 @@
                         userMarker = new google.maps.Marker({
                             position: { lat: lat, lng: lng },
                             map: map,
-                            title: "Ваше местоположение",
+                            title: "Ҷойгиршавии шумо",
                             icon: {
                                 url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"
                             }
@@ -188,7 +282,7 @@
                         saveLocation(lat, lng);
                     },
                     function(error) {
-                        alert("Не удалось получить ваше местоположение: " + error.message);
+                        alert("Ҷойгиршавии шуморо дарёфт карда натавонист:" + error.message);
                     },
                     {
                         enableHighAccuracy: true, // Включение точности геолокации
@@ -197,7 +291,7 @@
                     }
                 );
             } else {
-                alert("Ваш браузер не поддерживает Geolocation.");
+                alert("Браузери шумо Geolocation-ро дастгирӣ намекунад.");
             }
 
             // Загружаем все маркеры с сервера и отображаем их на карте
@@ -215,7 +309,7 @@
             const marker = new google.maps.Marker({
                 position: location,
                 map: map,
-                title: 'Это место проверенно в радиусе 1км проверенно:{{user.username}}',
+                title: 'Ин ҷой дар радиуси 1км тасдиқ шудааст, ки аз ҷониби:{{user.username}} тасдиқ карда шудааст.',
             });
 
             // Добавляем маркер в массив для возможного управления
@@ -236,7 +330,7 @@
                     marker.setMap(null);  // Удаление метки с карты
                     removeMarkerFromServer(location.lat(), location.lng());  // Удаление с сервера
                 } else {
-                    alert("Вы не можете удалить этот маркер, так как не создали его.");
+                    alert("Шумо ин нишонаро нест карда наметавонед, зеро шумо онро эҷод накардаед.");
                 }
             });
 
@@ -264,7 +358,7 @@
                 console.log(data.message || data.error);
             })
             .catch(error => {
-                console.error('Ошибка при сохранении метки:', error);
+                console.error('Хато дар нигоҳ доштани нишона:', error);
             });
         }
 
@@ -286,13 +380,13 @@
                 console.log(data.message || data.error);
             })
             .catch(error => {
-                console.error('Ошибка при удалении метки:', error);
+                console.error('Хато дар нигоҳ доштани нишона:', error);
             });
         }
 
         // Функция для загрузки маркеров с сервера
         function loadMarkers() {
-            fetch('/get-markers/', {
+            fetch('/get-markers/{{missing_person.id}}', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -305,7 +399,7 @@
                     const marker = new google.maps.Marker({
                         position: { lat: markerData.latitude, lng: markerData.longitude },
                         map: map,
-                        title: 'Это место проверенно в радиусе 1км',
+                        title: 'Ин ҷой дар радиуси 1 км тасдиқ карда шудааст{{user.username}}',
                         url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png",  
                     });
 
@@ -316,13 +410,13 @@
                             marker.setMap(null);  // Удаление метки с карты
                             removeMarkerFromServer(markerData.latitude, markerData.longitude);  // Удаление с сервера
                         } else {
-                            alert("Вы не можете удалить этот маркер, так как не создали его.");
+                            alert("Шумо ин нишонаро нест карда наметавонед, зеро шумо онро эҷод накардаед.");
                         }
                     });
                 });
             })
             .catch(error => {
-                console.error('Ошибка при загрузке маркеров:', error);
+                console.error('Хатогӣ дар боркунии нишонаҳо:', error);
             });
         }
 
@@ -350,6 +444,16 @@
             initMap();  // Перезагружаем карту с новым местоположением
         }, 30000);  // 30000 мс = 30 секунд
     </script>
+    <div class="seekers-container">
+        <h3>Одамоне, ки шахси гумшударо меҷӯянд</h3>
+        {% for seeker in seekers %}
+            <div class="seeker">
+                <strong>{{ seeker.user.first_name }} {{ seeker.user.last_name }}</strong> 
+            </div>
+        {% empty %}
+            <p>Дар ҳоли ҳозир дар ҷустуҷӯи шахси гумшуда нест.</p>
+        {% endfor %}
+    </div>
 </body>
 </html>
 

@@ -151,9 +151,9 @@ from .models import Marker
 from django.http import JsonResponse
 from .models import Marker
 
-def get_markers(request):
+def get_markers(request, id):
     if request.user.is_authenticated:
-        markers = Marker.objects.all()
+        markers = Marker.objects.filter(missing_person=id)
         data = [{"User": marker.user.username, "latitude": marker.latitude, "longitude": marker.longitude,} for marker in markers]
         return JsonResponse({'markers': data})
     else:
@@ -200,12 +200,15 @@ def view_missing_person(request, person_id):
         pass  # Пользователь не состоит в группе поиска
 
     user_location = UserLocation.objects.filter(user=request.user, is_active=True)
+    seekers = SearchGroup.objects.filter(missing_person=missing_person).select_related('user')
+
+    # Отправляем данные в шаблон
     return render(request, 'missing_person.html', {
         'missing_person': missing_person,
         'search_group': search_group,
-        'user_location': user_location
+        'user_location': user_location,
+        'seekers': seekers  # Добавляем участников группы поиска
     })
-
 
 
 @login_required
@@ -548,19 +551,26 @@ class ApplicationCharityListView(ListView):
 
 
 from django.http import HttpResponseForbidden
-
 class ApplicationCharityCreateView(CreateView):
     model = ApplicationCharity
     template_name = 'applicationcharity_form.html'
-    fields = ['description','category'] 
-    success_url = reverse_lazy('applicationcharity_list')
-
+    fields = ['description', 'category']
+    success_url = reverse_lazy('home')
     def form_valid(self, form):
+        pk = self.kwargs.get('pk')  # Получаем pk из URL
+
         # Проверка на статус пользователя
         if self.request.user.status != 'Нуждающийся':
             return HttpResponseForbidden("У вас нет прав для создания заявки.")
         
+        # Присваиваем текущего пользователя
         form.instance.user = self.request.user
+        
+        # Получаем объект company_charity по pk
+        company_charity = get_object_or_404(CharityCompany, pk=pk)
+        form.instance.company_charity = company_charity  # Присваиваем объект компании благотворительности
+        
+        # Устанавливаем статус
         form.instance.status = 'впроцессе'
         return super().form_valid(form)
 
@@ -670,3 +680,15 @@ class MissingPersonListView(ListView):
                 pass  # Если формат даты неверен, просто игнорируем фильтрацию по этой дате
 
         return queryset
+
+
+
+class MissingPersonCreateView(CreateView):
+    model = MissingPerson
+    fields = ['name', 'age', 'gender', 'description', 'last_known_latitude', 'last_known_longitude']
+    template_name = 'missedperson.html'  
+    success_url = reverse_lazy('missing_person_list')  
+    def form_valid(self, form):
+        if self.request.user.is_authenticated:
+            form.instance.reported_by = self.request.user
+        return super().form_valid(form)

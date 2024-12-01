@@ -2,11 +2,11 @@
 {% load static %}
 {% block content %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Application List</title>
+    <title>Рӯйхати аризаҳо</title>
     <style>
         /* General Reset */
         * {
@@ -196,27 +196,27 @@
 <body>
 
     <div class="container">
-        <h1>Application List</h1>
+        <h1>Рӯйхати аризаҳо</h1>
         <form method="get" style="margin-bottom: 2rem;">
             <div class="form-group">
-                <label for="user">Search by User</label>
+                <label for="user">Ҷустуҷӯ бо корбар</label>
                 <input type="text" id="user" name="user" value="{{ search_user }}">
             </div>
             <div class="form-group">
-                <label for="status">Search by Status</label>
+                <label for="status">Ҷустуҷӯ бо ҳолат</label>
                 <input type="text" id="status" name="status" value="{{ search_status }}">
             </div>
-            <button type="submit" class="btn">Search</button>
-            <a href="{% url 'application_list' %}" class="btn" style="background-color: #f44336;">Clear</a>
+            <button type="submit" class="btn">Ҷустуҷӯ</button>
+            <a href="{% url 'application_list' %}" class="btn" style="background-color: #f44336;">Шишагиҳо</a>
         </form>
 
         <table>
             <thead>
                 <tr>
-                    <th>User</th>
-                    <th>Status</th>
-                    <th>Description</th>
-                    <th>Added Time</th>
+                    <th>Корбар</th>
+                    <th>Ҳолат</th>
+                    <th>Тавсифот</th>
+                    <th>Вақти илова</th>
                 </tr>
             </thead>
             <tbody>
@@ -229,7 +229,7 @@
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="4" style="text-align: center; color: #888;">No applications found.</td>
+                        <td colspan="4" style="text-align: center; color: #888;">Аризаҳо ёфта нашуданд.</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -238,15 +238,15 @@
         <div class="pagination">
             {% if is_paginated %}
                 {% if page_obj.has_previous %}
-                    <a href="?page=1&user={{ search_user }}&status={{ search_status }}">First</a>
-                    <a href="?page={{ page_obj.previous_page_number }}&user={{ search_user }}&status={{ search_status }}">Previous</a>
+                    <a href="?page=1&user={{ search_user }}&status={{ search_status }}">Аввал</a>
+                    <a href="?page={{ page_obj.previous_page_number }}&user={{ search_user }}&status={{ search_status }}">Қаблӣ</a>
                 {% endif %}
                 
-                <span class="current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                <span class="current">Саҳифа {{ page_obj.number }} аз {{ page_obj.paginator.num_pages }}</span>
 
                 {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}&user={{ search_user }}&status={{ search_status }}">Next</a>
-                    <a href="?page={{ page_obj.paginator.num_pages }}&user={{ search_user }}&status={{ search_status }}">Last</a>
+                    <a href="?page={{ page_obj.next_page_number }}&user={{ search_user }}&status={{ search_status }}">Оянда</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}&user={{ search_user }}&status={{ search_status }}">Охирин</a>
                 {% endif %}
             {% endif %}
         </div>

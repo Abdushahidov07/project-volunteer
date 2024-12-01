@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-field {
+            margin-bottom: 15px;
+        }
+
+        input[type="text"], input[type="password"], input[type="email"], select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus, select:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
+
+        button[type="submit"] {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .form-footer {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .form-footer a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Зарегистрироваться</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-field">
+                <label for="username">Имя пользователя</label>
+                {{ form.username }}
+            </div>
+
+            <div class="form-field">
+                <label for="first_name">Имя</label>
+                {{ form.first_name }}
+            </div>
+
+            <div class="form-field">
+                <label for="last_name">Фамилия</label>
+                {{ form.last_name }}
+            </div>
+
+            <div class="form-field">
+                <label for="age">Возраст</label>
+                {{ form.age }}
+            </div>
+
+            <div class="form-field">
+                <label for="phone_number">Телефон</label>
+                {{ form.phone_number }}
+            </div>
+
+            <div class="form-field">
+                <label for="gender">Пол</label>
+                {{ form.gender }}
+            </div>
+
+            <div class="form-field">
+                <label for="status">Статус</label>
+                {{ form.status }}
+            </div>
+
+            <div class="form-field">
+                <label for="password1">Пароль</label>
+                {{ form.password1 }}
+            </div>
+
+            <div class="form-field">
+                <label for="password2">Подтверждение пароля</label>
+                {{ form.password2 }}
+            </div>
+
+            <button type="submit">Зарегистрироваться</button>
+        </form>
+        <div class="form-footer">
+            <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
+        </div>
+    </div>
+</body>
+</html>

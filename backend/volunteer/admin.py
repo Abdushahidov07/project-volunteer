@@ -4,6 +4,8 @@ from .models import *
 
 
 admin.site.register(CustomUser),
+admin.site.register(CharityCompany),
+admin.site.register(ApplicationCharity),
 admin.site.register(Category),
 admin.site.register(UserLocation),
 admin.site.register(MissingPerson),

@@ -1,15 +1,16 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Volunteer Together</title>
+    <title>Маркази Волонтёрҳо</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <link rel="stylesheet" href="{% static "/styles/footer.css" %}">
     <link rel="stylesheet" href="{% static "/styles/header.css" %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
 </head>
 <body>
     
@@ -17,27 +18,30 @@
         <nav class="nav">
             <div class="logo">VolunteerHub</div>
             <div class="nav-links">
-                <a href="{% url "home" %}">Home</a>
+                <a href="{% url "home" %}">Саҳифаи асосӣ</a>
                 {% if user.status == 'валантер' %}
-                <a href="{% url "missing_person_list" %}">List missing</a>
-                <a href="{% url "help_list" %}">Help list</a>
-                <a href="#impact"></a>
+                <a href="{% url "missing_person_list" %}">Рӯйхати гумшудагон</a>
+                <a href="{% url "help_list" %}">Рӯйхати кӯмак</a>
+                <a href="{% url "application_list" %}">Рӯйхати ариза</a>
+                <a href="#impact">Таъсир</a>
                 {% elif user.status == 'Нуждающийся' %}
-                <a href="{% url "applyhelp_create" %}">Create Helpapply</a>
-                <a href="{% url "help_list1" %}">Help list</a>
+                <a href="{% url "applyhelp_create" %}">Эҷод кардани ариза барои кӯмак</a>
+                <a href="{% url "createmissing" %}">Эҷод кардани одами гумшуда</a>
+                <a href="{% url "help_list1" %}">Рӯйхати кӯмак</a>
                 {% endif %}
-                <a href="#stories">Stories</a>
                 {% if user.is_authenticated %}
-                    <a href="{% url "logout" %}" class="join-btn">Log out</a>
+                    <a href="{% url "logout" %}" class="join-btn">Баромадан</a>
                 {% else %}
-                    <a href="{% url "login" %}" class="join-btn">Log in</a>
+                    <a href="{% url "login" %}" class="join-btn">Вуруд</a>
                 {% endif %}
                 {% if user.image %}
                 <img src="{{ user.image.url }}" alt="image" style="width: 60px; height: 60px; border-radius: 50%;">
                 {% else %}
                 <img src="{% static 'images/user.jpg' %}" alt="image" style="width: 60px; height: 60px; border-radius: 50%;">
                 {% endif %}
+                {% if user.is_authenticated %}
                 <a href="{% url "profile" user.id%}">{{user.username}}</a>
+                {% endif %}
             </div>
         </nav>
     </header>
@@ -48,20 +52,20 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
-                <h4>About VolunteerHub</h4>
-                <p>Connecting passionate individuals with meaningful volunteer opportunities worldwide.</p>
+                <h4>Дар бораи VolunteerHub</h4>
+                <p>Мо одамони боғуворро бо имкониятҳои маъзанди волонтёрӣ дар саросари ҷаҳон пайваст мекунем.</p>
             </div>
             <div class="footer-section">
-                <h4>Quick Links</h4>
+                <h4>Линкҳои муфид</h4>
                 <ul>
-                    <li><a href="{% url "missing_person_list" %}">List missing</a></li>
-                    <li><a href="#impact">Impact</a></li>
-                    <li><a href="#stories">Stories</a></li>
-                    <li><a href="#join">Join Us</a></li>
+                    <li><a href="{% url "missing_person_list" %}">Рӯйхати гумшудагон</a></li>
+                    <li><a href="#impact">Таъсир</a></li>
+                    <li><a href="#stories">Ҳикояҳо</a></li>
+                    <li><a href="#join">Ба мо пайваст шавед</a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h4>Connect With Us</h4>
+                <h4>Бо мо тамос гиред</h4>
                 <div class="social-links">
                     <a href="#"><i class="fab fa-facebook"></i></a>
                     <a href="#"><i class="fab fa-twitter"></i></a>

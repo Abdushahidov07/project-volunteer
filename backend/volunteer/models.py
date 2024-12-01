@@ -130,7 +130,6 @@ class Marker(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     missing_person = models.ForeignKey(MissingPerson, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
-
     def __str__(self):
         return f"Marker by {self.user.username}"
 

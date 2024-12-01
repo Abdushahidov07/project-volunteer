@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
     <style>
-        /* General Reset */
+        /* Общий сброс стилей */
         * {
             margin: 0;
             padding: 0;
@@ -9,17 +9,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* Fade-in animation for page load */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-
+        /* Анимация появления */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -52,14 +42,14 @@
             gap: 20px;
             text-align: center;
             opacity: 0;
-            animation: fadeInUp 1s ease-in-out 1s forwards; /* Adding fadeInUp animation */
+            animation: fadeInUp 1s ease-in-out 1s forwards;
         }
 
         .form-group {
             margin-bottom: 20px;
             text-align: center;
             opacity: 0;
-            animation: fadeInUp 1s ease-in-out 1s forwards; /* Adding fadeInUp animation */
+            animation: fadeInUp 1s ease-in-out 1s forwards;
         }
 
         label {
@@ -80,18 +70,13 @@
             transition: all 0.3s ease;
             text-align: center;
             opacity: 0;
-            animation: fadeInUp 1s ease-in-out 2s forwards; /* Adding fadeInUp animation */
+            animation: fadeInUp 1s ease-in-out 2s forwards;
         }
 
         input:focus, textarea:focus, select:focus {
             border-color: #2196F3;
             outline: none;
-            transform: scale(1.05); /* Slight zoom effect on focus */
-        }
-
-        textarea {
-            min-height: 120px;
-            resize: vertical;
+            transform: scale(1.05);
         }
 
         .form-actions {
@@ -100,7 +85,7 @@
             gap: 15px;
             text-align: center;
             opacity: 0;
-            animation: fadeInUp 1s ease-in-out 2.5s forwards; /* Adding fadeInUp animation */
+            animation: fadeInUp 1s ease-in-out 2.5s forwards;
         }
 
         .btn-submit, .btn-cancel {
@@ -114,7 +99,7 @@
             transition: all 0.3s ease;
             transform: scale(0.95);
             opacity: 0;
-            animation: fadeInUp 1s ease-in-out 3s forwards; /* Adding fadeInUp animation */
+            animation: fadeInUp 1s ease-in-out 3s forwards;
         }
 
         .btn-submit {
@@ -139,10 +124,6 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 2rem;
-            }
-
             main {
                 padding: 30px;
                 width: 100%;
@@ -165,18 +146,38 @@
             {% csrf_token %}
             
             <div class="form-group">
+                <label for="name">Ном</label>
+                {{ form.name }}
+            </div>
+
+            <div class="form-group">
+                <label for="age">Возраст</label>
+                {{ form.age }}
+            </div>
+
+            <div class="form-group">
+                <label for="gender">Пол</label>
+                {{ form.gender }}
+            </div>
+
+            <div class="form-group">
                 <label for="description">Тавсифот</label>
                 {{ form.description }}
             </div>
-            
+
             <div class="form-group">
-                <label for="applay">Категорияи кӯмак</label>
-                {{ form.applay }}
+                <label for="last_known_latitude">Шимои географӣ (Шимол)</label>
+                {{ form.last_known_latitude }}
             </div>
-            
+
+            <div class="form-group">
+                <label for="last_known_longitude">Шимои географӣ (Маҳраб)</label>
+                {{ form.last_known_longitude }}
+            </div>
+
             <div class="form-actions">
                 <button type="submit" class="btn-submit">Ирсол кардан</button>
-                <a href="{% url 'application_list' %}" class="btn-cancel">Бозгашт</a>
+                <a href="{% url 'missing_person_list' %}" class="btn-cancel">Бозгашт</a>
             </div>
         </form>
     </main>

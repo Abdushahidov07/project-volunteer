@@ -1,31 +1,66 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-    <title>Создание заявки на помощь</title>
+    <title>Сохтани ариза барои кӯмак</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f7f7f7;
+        /* General Reset */
+        * {
             margin: 0;
             padding: 0;
-            color: #333;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
         }
+
+        body {
+            background-color: #f4f7fc;
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+            height: 100vh;
+            animation: fadeIn 0.5s ease-in-out; /* Faster fadeIn */
+        }
+
+        /* Animation for page load */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
         .container {
+            margin: auto;
+            margin-top: 200px;
+            margin-bottom: 100px;
             width: 100%;
-            max-width: 900px;
-            margin: 40px auto;
+            max-width: 550px;  /* Reduced width */
             background-color: #fff;
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.5s ease-out; /* Faster slideUp */
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         h1 {
             text-align: center;
-            font-size: 2em;
+            font-size: 1.8em;
             color: #333;
             margin-bottom: 20px;
+            font-weight: 500;
         }
 
         form {
@@ -41,29 +76,37 @@
 
         input, select, textarea {
             font-size: 1em;
-            padding: 10px;
+            padding: 12px;
             margin-bottom: 20px;
-            border: 1px solid #ccc;
+            border: 1px solid #ddd;
             border-radius: 5px;
+            transition: all 0.4s ease; /* Faster transition */
         }
 
         input[type="file"] {
-            padding: 3px;
+            padding: 5px;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #2196F3;
+            outline: none;
+            box-shadow: 0 0 5px rgba(33, 150, 243, 0.2);
         }
 
         button {
-            background-color: #4CAF50;
+            background-color: #35aadf;
             color: white;
             padding: 12px;
             border: none;
             border-radius: 5px;
             font-size: 1.1em;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.2s, transform 0.1s ease-in-out; /* Faster transition */
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #81e6d6;
+            transform: translateY(-2px); /* Faster hover effect */
         }
 
         .form-footer {
@@ -76,10 +119,12 @@
             text-decoration: none;
             font-size: 1.1em;
             margin-top: 20px;
+            transition: all 0.5s; /* Faster transition */
         }
 
         .form-footer a:hover {
             text-decoration: underline;
+            color: #0056b3;
         }
 
         .error-message {
@@ -87,42 +132,82 @@
             font-size: 0.9em;
             margin-top: -15px;
         }
+
+        /* Styling for inputs */
+        .input-field {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-field input, .input-field select, .input-field textarea {
+            width: 100%;
+            font-size: 1em;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #f7f7f7;
+            transition: all 0.5s ease; /* Faster transition */
+        }
+
+        .input-field input:focus, .input-field select:focus, .input-field textarea:focus {
+            border-color: #2196F3;
+            outline: none;
+            box-shadow: 0 0 5px rgba(33, 150, 243, 0.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                width: 100%;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            button {
+                font-size: 1em;
+            }
+        }
+
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Создание заявки на помощь</h1>
+        <h1>Сохтани ариза барои кӯмак</h1>
 
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
-            <!-- Поле для выбора пользователя -->
-            <label for="id_user">Пользователь:</label>
-            {{ form.user }}
 
             <!-- Поле для описания -->
-            <label for="id_description">Описание:</label>
-            {{ form.description }}
+            <div class="input-field">
+                <label for="id_description">Тавсиф:</label>
+                {{ form.description }}
+            </div>
+
             <!-- Поле для изображения -->
-            <label for="id_image">Изображение (необязательно):</label>
-            {{ form.image }}
+            <div class="input-field">
+                <label for="id_image">Тасвир (ихтиёрӣ):</label>
+                {{ form.image }}
+            </div>
 
             <!-- Поле для выбора категории -->
-            <label for="id_category">Категория:</label>
-            {{ form.category }}
-
-            <!-- Поле для статуса -->
-            <label for="id_status">Статус:</label>
-            {{ form.status }}
+            <div class="input-field">
+                <label for="id_category">Категория:</label>
+                {{ form.category }}
+            </div>
 
             <!-- Поле для активности -->
-            <label for="id_is_active">Активность:</label>
-            {{ form.is_active }}
+            <div class="input-field">
+                <label for="id_is_active">Фаъолият:</label>
+                {{ form.is_active }}
+            </div>
 
             <!-- Кнопка отправки формы -->
             <div class="form-footer">
-                <button type="submit">Создать заявку</button>
+                <button type="submit">Создани ариза</button>
             </div>
         </form>
 
@@ -139,8 +224,9 @@
         {% endif %}
 
         <div class="form-footer">
-            <a href="{% url 'help_list' %}">Перейти к списку заявок</a>
+            <a href="{% url 'help_list' %}">Ба рӯйхати аризаҳо гузаштан</a>
         </div>
     </div>
 
+</body>
 {% endblock content %}

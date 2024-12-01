@@ -2,88 +2,177 @@
 {% load static %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static "styles/profilestyile.css" %}">
+{% if user.status == 'валантер' %}
+<link rel="stylesheet" href="{% static 'styles/profilestyile.css' %}">
 <main class="profile-container">
     <div class="profile-header">
         <div class="profile-avatar">
             {% if user.image %}
-            <img src="{{ user.image.url }}" alt="Volunteer Avatar">
+            <img src="{{ user.image.url }}" alt="Аватар волонтера">
             {% else %}
-            <img src="{% static 'images/user.jpg' %}" alt="Volunteer Avatar">
+            <img src="{% static 'images/user.jpg' %}" alt="Аватар волонтера">
             {% endif %}
         </div>
         <div class="profile-info">
             <h2>{{user.first_name}} {{user.last_name}}</h2>
-            <p class="volunteer-status">Senior Volunteer</p>
+            <p class="volunteer-status">{{user.status}}</p>
             <div class="badges">
-                <span class="badge">Environmental Hero</span>
-                <span class="badge">Community Leader</span>
+                <span class="badge">Қаҳрамони муҳити зист</span>
+                <span class="badge">Роҳбари ҷомеа</span>
             </div>
         </div>
     </div>
 
     <div class="profile-details">
         <div class="mission-section">
-            <h3>My Volunteer Mission</h3>
-            <p>"Dedicated to creating positive change through community service and environmental conservation. Together, we can make our world a better place."</p>
+            <h3>Миссияи волонтерии ман</h3>
+            <p>"Мо барои эҷоди тағйирот мусбат тавассути хидмат ба ҷомеа ва ҳифзи муҳити зист бахшида шудаем. Бо ҳам ояндаи беҳтаре сохтан мумкин аст."</p>
         </div>
 
         <div class="impact-section">
             <div class="impact-item">
                 <span class="impact-number">120+</span>
-                <span class="impact-label">Volunteer Hours</span>
+                <span class="impact-label">Соатҳои волонтёрӣ</span>
             </div>
             <div class="impact-item">
                 <span class="impact-number">25</span>
-                <span class="impact-label">Projects Led</span>
+                <span class="impact-label">Лоиҳаҳои роҳбарӣ</span>
             </div>
             <div class="impact-item">
                 <span class="impact-number">500+</span>
-                <span class="impact-label">Lives Impacted</span>
+                <span class="impact-label">Зиндагиҳои таъсиррасондашударо</span>
             </div>
         </div>
 
         <div class="causes-section">
-            <h3>Causes I Support</h3>
+            <h3>Сабабҳо, ки ман онҳоро дастгирӣ мекунам</h3>
             <div class="causes-grid">
                 <div class="cause-item">
                     <span class="cause-icon">🌱</span>
-                    <span class="cause-name">Environmental</span>
+                    <span class="cause-name">Муҳити зист</span>
                 </div>
                 <div class="cause-item">
                     <span class="cause-icon">📚</span>
-                    <span class="cause-name">Education</span>
+                    <span class="cause-name">Таълим</span>
                 </div>
                 <div class="cause-item">
                     <span class="cause-icon">🏥</span>
-                    <span class="cause-name">Healthcare</span>
+                    <span class="cause-name">Здравоохранение</span>
                 </div>
                 <div class="cause-item">
                     <span class="cause-icon">🏠</span>
-                    <span class="cause-name">Housing</span>
+                    <span class="cause-name">Макон</span>
                 </div>
             </div>
         </div>
 
         <div class="upcoming-events">
-            <h3>Upcoming Events</h3>
+            <h3>Рӯйдодҳои оянда</h3>
             <div class="event-list">
                 <div class="event-item">
-                    <div class="event-date">MAR 15</div>
+                    <div class="event-date">15 МАР</div>
                     <div class="event-details">
-                        <h4>Beach Cleanup Drive</h4>
-                        <p>Leading a team of 20 volunteers</p>
+                        <h4>Ҳаракати тоза кардани соҳил</h4>
+                        <p>Роҳбарӣ кардани дастаи 20 волонтёр</p>
                     </div>
                 </div>
                 <div class="event-item">
-                    <div class="event-date">MAR 22</div>
+                    <div class="event-date">22 МАР</div>
                     <div class="event-details">
-                        <h4>Youth Mentoring Workshop</h4>
-                        <p>Sharing experiences with new volunteers</p>
+                        <h4>Воркшопи роҳнамоии ҷавонон</h4>
+                        <p>Тафсир кардани таҷрибаҳо бо волонтёрони нав</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </main>
+{% elif user.status == 'Нуждающийся' %}
+<link rel="stylesheet" href="{% static 'styles/profilestyile.css' %}">
+<main class="profile-container">
+    <div class="profile-header">
+        <div class="profile-avatar">
+            {% if user.image %}
+            <img src="{{ user.image.url }}" alt="Аватари шахсияти ниёзманд">
+            {% else %}
+            <img src="{% static 'images/user.jpg' %}" alt="Аватари шахсияти ниёзманд">
+            {% endif %}
+        </div>
+        <div class="profile-info">
+            <h2>{{user.first_name}} {{user.last_name}}</h2>
+            <p class="volunteer-status">{{user.status}}</p>
+            <div class="badges">
+                <span class="badge">Ба кӯмак эҳтиёҷ дорад</span>
+                <span class="badge">Пайвандгарои ҷомеа</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-details">
+        <div class="mission-section">
+            <h3>Озмоиш ва вазъи ман</h3>
+            <p>"Ман барои кӯмак хоҳиш мекунам, то зиндагии худро беҳтар кунам ва мушкилотро паси сар кунам. Кӯмаки шумо метавонад зиндагии маро беҳтар кунад."</p>
+        </div>
+
+        <div class="impact-section">
+            <div class="impact-item">
+                <span class="impact-number">5</span>
+                <span class="impact-label">Лоиҳаҳои кӯмак</span>
+            </div>
+            <div class="impact-item">
+                <span class="impact-number">2</span>
+                <span class="impact-label">Ишораҳои анҷомёфта</span>
+            </div>
+            <div class="impact-item">
+                <span class="impact-number">50+</span>
+                <span class="impact-label">Шахсоне, ки ман онҳоро илҳом бахшидам</span>
+            </div>
+        </div>
+
+        <div class="causes-section">
+            <h3>Маро кумак лозим аст</h3>
+            <div class="causes-grid">
+                <div class="cause-item">
+                    <span class="cause-icon">🍞</span>
+                    <span class="cause-name">Маводҳои ғизоӣ</span>
+                </div>
+                <div class="cause-item">
+                    <span class="cause-icon">🏠</span>
+                    <span class="cause-name">Шароитҳои манзил</span>
+                </div>
+                <div class="cause-item">
+                    <span class="cause-icon">💼</span>
+                    <span class="cause-name">Моҳоятҳои кори</span>
+                </div>
+                <div class="cause-item">
+                    <span class="cause-icon">💊</span>
+                    <span class="cause-name">Кӯмакҳои тиббӣ</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="upcoming-events">
+            <h3>Воқеаҳои оянда барои кӯмак</h3>
+            <div class="event-list">
+                <div class="event-item">
+                    <div class="event-date">15 МАР</div>
+                    <div class="event-details">
+                        <h4>Рӯзи тақсимоти хӯроки амиқ</h4>
+                        <p>Тақсимоти хӯрок ба ниёзмандон</p>
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-date">22 МАР</div>
+                    <div class="event-details">
+                        <h4>Мастер-класси ҷустуҷӯи кори</h4>
+                        <p>Таълим дар бораи ҷустуҷӯи кори мувофиқ ва навиштани CV</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endif %}
+
 {% endblock content %}

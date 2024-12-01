@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="tg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Пропавший человек: {{ missing_person_name }}</title>
+    <title>Шахс гумшуда: {{ missing_person_name }}</title>
     
-    <!-- Подключение стилей Leaflet -->
+    <!-- Пайваст кардани стили Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     
-    <!-- Подключение шрифта Google Fonts для стиля -->
+    <!-- Пайваст кардани шрифт аз Google Fonts барои стиль -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Основной стиль страницы */
+        /* Стили асосии саҳифа */
         body {
             font-family: 'Roboto', sans-serif;
             background-color: #f4f4f9;
@@ -21,7 +21,7 @@
             color: #333;
         }
 
-        /* Стиль заголовков */
+        /* Стили сарлавҳаҳо */
         h1 {
             font-size: 2rem;
             color: #2c3e50;
@@ -33,7 +33,7 @@
             color: #34495e;
         }
 
-        /* Контейнер для информации о человеке */
+        /* Контейнер барои маълумоти шахс */
         .info-container {
             background-color: #ffffff;
             border-radius: 8px;
@@ -53,7 +53,7 @@
             color: #2c3e50;
         }
 
-        /* Стили для карты */
+        /* Стили барои харита */
         #map {
             margin: auto;
             width: 80%;
@@ -62,7 +62,7 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
-        /* Адаптивность */
+        /* Адаптивият */
         @media (max-width: 768px) {
             h1 {
                 font-size: 1.5rem;
@@ -80,34 +80,34 @@
 </head>
 <body>
 
-    <h1>Пропавший человек: {{ missing_person_name }}</h1>
+    <h1>Шахс гумшуда: {{ missing_person_name }}</h1>
 
-    <!-- Информация о пропавшем человеке -->
+    <!-- Маълумоти шахс гумшуда -->
     <div class="info-container">
-        <p><strong>Описание:</strong> {{ missing_person_description }}</p>
-        <p><strong>Возраст:</strong> {{ missing_person.age }} лет</p>
-        <p><strong>Пол:</strong> {{ missing_person.gender }}</p>
-        <p><strong>Время последнего сообщения:</strong> {{ missing_person.reported_time|date:"d.m.Y H:i" }}</p>
+        <p><strong>Тавсиф:</strong> {{ missing_person_description }}</p>
+        <p><strong>Синну сол:</strong> {{ missing_person.age }} сол</p>
+        <p><strong>Ҷинс:</strong> {{ missing_person.gender }}</p>
+        <p><strong>Вақти охирини гузориш:</strong> {{ missing_person.reported_time|date:"d.m.Y H:i" }}</p>
     </div>
 
-    <h2>Местоположение пропавшего человека</h2>
+    <h2>Ҷойгиршавии шахси гумшуда</h2>
 
-    <!-- Карта с маркером -->
+    <!-- Харита бо нишонаи маркер -->
     <div id="map"></div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
-        // Инициализация карты с координатами пропавшего человека
+        // Инициализатсияи харита бо координатҳои шахси гумшуда
         var map = L.map('map').setView([{{ missing_person_lat }}, {{ missing_person_lon }}], 13);
 
-        // Добавление тайлов карты (OpenStreetMap)
+        // Қабул кардани тасвирҳои харита (OpenStreetMap)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // Добавление маркера на карту для пропавшего человека
+        // Илова кардани маркер ба харита барои шахси гумшуда
         L.marker([{{ missing_person_lat }}, {{ missing_person_lon }}]).addTo(map)
-            .bindPopup("<b>{{ missing_person_name }}</b><br>Описание: {{ missing_person_description }}")
+            .bindPopup("<b>{{ missing_person_name }}</b><br>Тавсиф: {{ missing_person_description }}")
             .openPopup();
     </script>
 

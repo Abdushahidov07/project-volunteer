@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Лист помощи{% endblock %}
+{% block title %}Рӯйхати кӯмакҳо{% endblock %}
 
 {% block content %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
@@ -12,16 +12,16 @@
 <main>
     <section class="hero">
         <div class="hero-content" data-aos="fade-up">
-            <h1>Помогаем друг другу</h1>
-            <p>Платформа для тех, кто готов помочь и тех, кто нуждается в помощи</p>
+            <h1>Ҳамдигарро кӯмак мекунем</h1>
+            <p>Платформа барои одамоне, ки готов ба кӯмак кардан ва барои касоне, ки ба кӯмак ниёз доранд</p>
         </div>
 
         <div class="filter-container" data-aos="fade-up" data-aos-delay="200">
             <div class="category-filter">
-                <label for="categorySelect">Выберите категорию:</label>
+                <label for="categorySelect">Категорияро интихоб кунед:</label>
                 <form method="get" action="{% url 'help_list' %}">
                     <select name="category" id="categorySelect">
-                        <option value="">Все</option>
+                        <option value="">Ҳама</option>
                         {% for category in categories %}
                             <option value="{{ category.id }}" {% if category.id == request.GET.category %} selected {% endif %}>
                                 {{ category.category_name }}
@@ -30,7 +30,7 @@
                     </select>
                     <button type="submit" class="filter-btn" style="margin-top: 10px;">
                         <i class="fas fa-filter"></i>
-                        Фильтровать
+                        Таснифот
                     </button>
                 </form>
             </div>
@@ -38,7 +38,7 @@
     </section>
 
     <section class="requests">
-        <h2 data-aos="fade-up">Заявки на помощь</h2>
+        <h2 data-aos="fade-up">Заявкаҳои кӯмак</h2>
 
         <div class="requests-grid">
             {% for apply_help in apply_helps %}
@@ -59,19 +59,19 @@
                             <a href="{% url "application_create" apply_help.id%}" class="help-btn">
                             <button class="help-btn">
                                 <i class="fas fa-hand-holding-heart"></i>
-                                Помочь
+                                Кӯмак кардан
                             </button>
                             </a>
                             {% endif %}
                             <button class="details-btn">
                                 <i class="fas fa-info-circle"></i>
-                                Подробнее
+                                Маълумоти бештар
                             </button>
                         </div>
                     </div>
                 </div>
             {% empty %}
-                <p class="no-apply-helps">Нет заявок на помощь по выбранной категории.</p>
+                <p class="no-apply-helps">Заявкаҳои кӯмак дар категорияи интихобшуда нест.</p>
             {% endfor %}
         </div>
     </section>

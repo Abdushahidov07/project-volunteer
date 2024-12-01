@@ -5,75 +5,77 @@
 <main>
     <section class="hero" id="home">
         <div class="hero-content" data-aos="fade-up">
-            <h1>Make a Difference Today</h1>
-            <p>Join our community of volunteers and help create positive change in the world</p>
+            <h1>Имрӯз тағйирот кунед</h1>
+            <p>Ба ҷомеаи волонтёрон мо пайваст шавед ва кӯмак кунед, ки тағйироти мусбат дар ҷаҳон эҷод кунед</p>
             {% if user.is_authenticated %}
                 {% comment %} <button class="cta-button"></button> {% endcomment %}
             {% else %}
-                <button class="cta-button">Start Volunteering</button>
+                <button class="cta-button">Волонтёри оғоз кунед</button>
             {% endif %}
         </div>
         <div class="hero-stats" data-aos="fade-up" data-aos-delay="200">
             <div class="stat-item">
-                <span class="stat-number">10K+</span>
-                <span class="stat-label">Volunteers</span>
+                <span class="stat-number">10К+</span>
+                <span class="stat-label">Волонтёрҳо</span>
             </div>
             <div class="stat-item">
                 <span class="stat-number">500+</span>
-                <span class="stat-label">Projects</span>
+                <span class="stat-label">Лоиҳаҳо</span>
             </div>
             <div class="stat-item">
                 <span class="stat-number">50+</span>
-                <span class="stat-label">Countries</span>
+                <span class="stat-label">Кишварҳо</span>
             </div>
         </div>
     </section>
-      <section id="missions" class="missions-section">
+
+    <section id="missions" class="missions-section">
         <img src="{% static "images/sakura.jpg" %}" alt="">
         <div class="container">
-            <h2 style="color: white;text-shadow: 2px 4px 6px rgba(5, 5, 5, 0.5);">Наши миссии</h2>
+            <h2 style="color: white;text-shadow: 2px 4px 6px rgba(5, 5, 5, 0.5);">Миссияҳои мо</h2>
             <div class="missions">
                 <div class="mission">
-                    <h3>Помощь нуждающимся</h3>
-                    <p>Организация сбора средств, продуктов и одежды для малообеспеченных семей.</p>
+                    <h3>Кӯмак ба ниёзмандон</h3>
+                    <p>Созмони ҷамъоварии воситаҳо, хӯрок ва либос барои хонаводаҳои камбизоат.</p>
                 </div>
                 <div class="mission">
-                    <h3>Экологические акции</h3>
-                    <p>Участие в уборке парков, посадке деревьев и переработке отходов.</p>
+                    <h3>Аксияҳои экологӣ</h3>
+                    <p>Қисмдорӣ дар тозакунӣ кардани боғҳо, шенасоии дарахтон ва коркарди партовҳо.</p>
                 </div>
                 <div class="mission">
-                    <h3>Поддержка молодежи</h3>
-                    <p>Проведение мастер-классов и образовательных семинаров для детей и подростков.</p>
+                    <h3>Поигоҳгузории ҷавонон</h3>
+                    <p>Коргоҳҳо ва семинарҳои таълимӣ барои кӯдакон ва наврасон.</p>
                 </div>
             </div>
         </div>
     </section>
+
     <section class="opportunities" id="opportunities">
-        <h2 data-aos="fade-up">Volunteer Opportunities</h2>
+        <h2 data-aos="fade-up">Имкониятҳои волонтёрӣ</h2>
         <div class="swiper opportunities-slider">
             <div class="swiper-wrapper">
                 <div class="swiper-slide">
                     <div class="opportunity-card">
                         <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=500&q=80" alt="Environmental">
-                        <h3>Environmental Protection</h3>
-                        <p>Help preserve our planet for future generations</p>
-                        <a href="#" class="learn-more">Learn More</a>
+                        <h3>Ҳифзи муҳити зист</h3>
+                        <p>Ба муҳофизат кардани сайёра барои наслҳои оянда кӯмак кунед</p>
+                        <a href="#" class="learn-more">Маълумоти бештар</a>
                     </div>
                 </div>
                 <div class="swiper-slide">
                     <div class="opportunity-card">
                         <img src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=500&q=80" alt="Education">
-                        <h3>Education Support</h3>
-                        <p>Empower through knowledge sharing</p>
-                        <a href="#" class="learn-more">Learn More</a>
+                        <h3>Дастгирии таълим</h3>
+                        <p>Бо тақсимоти дониш, кӯмак кунед</p>
+                        <a href="#" class="learn-more">Маълумоти бештар</a>
                     </div>
                 </div>
                 <div class="swiper-slide">
                     <div class="opportunity-card">
                         <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=500&q=80" alt="Community">
-                        <h3>Community Service</h3>
-                        <p>Build stronger local communities</p>
-                        <a href="#" class="learn-more">Learn More</a>
+                        <h3>Хидматрасонӣ ба ҷомеа</h3>
+                        <p>Ҷомеаҳои маҳаллиро қавитар созед</p>
+                        <a href="#" class="learn-more">Маълумоти бештар</a>
                     </div>
                 </div>
             </div>
@@ -85,47 +87,47 @@
 
     <section class="impact" id="impact">
         <div class="impact-content" data-aos="fade-right">
-            <h2>Our Impact</h2>
+            <h2>Таъсири мо</h2>
             <div class="impact-grid">
                 <div class="impact-item">
                     <i class="fas fa-tree"></i>
-                    <h3>1M+ Trees Planted</h3>
+                    <h3>1М+ Дарахт шенасо карда шуд</h3>
                 </div>
                 <div class="impact-item">
                     <i class="fas fa-book-reader"></i>
-                    <h3>50K+ Students Helped</h3>
+                    <h3>50К+ Шогирд кӯмак карда шуд</h3>
                 </div>
                 <div class="impact-item">
                     <i class="fas fa-hands-helping"></i>
-                    <h3>100K+ Lives Impacted</h3>
+                    <h3>100К+ Ҷонҳоро таъсиргузор карда шуд</h3>
                 </div>
             </div>
         </div>
     </section>
 
     <section class="stories" id="stories">
-        <h2 data-aos="fade-up">Volunteer Stories</h2>
+        <h2 data-aos="fade-up">Ҳикояҳои волонтёрон</h2>
         <div class="stories-grid">
             <div class="story-card" data-aos="fade-up">
                 <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&q=80" alt="Sarah">
-                <h3>Sarah's Journey</h3>
-                <p>"Volunteering changed my perspective on life and helped me find my true purpose."</p>
+                <h3>Роҳи Сара</h3>
+                <p>"Волонтёрӣ нуқтаи назарро дар бораи ҳаёт тағйир дод ва ба ман кӯмак кард, ки мақсади аслии худро пайдо кунам."</p>
             </div>
             <div class="story-card" data-aos="fade-up" data-aos-delay="100">
                 <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&q=80" alt="John">
-                <h3>John's Impact</h3>
-                <p>"Teaching children in rural areas has been the most rewarding experience of my life."</p>
+                <h3>Таъсири Ҷон</h3>
+                <p>"Омӯзонидани кӯдакон дар манотиқи рустоӣ барои ман таҷрибаи пуршарафи ҳаёт шуд."</p>
             </div>
         </div>
     </section>
 
     <section class="join" id="join">
         <div class="join-content" data-aos="zoom-in">
-            <h2>Ready to Make a Difference?</h2>
-            <p>Join our community of passionate volunteers today</p>
+            <h2>Омодаед, ки тағйирот созед?</h2>
+            <p>Ба ҷомеаи волонтёрони пуштдори мо имрӯз пайваст шавед</p>
             <form class="join-form">
-                <input type="email" placeholder="Enter your email">
-                <button type="submit" class="cta-button">Join Now</button>
+                <input type="email" placeholder="Электронӣ худро ворид кунед">
+                <button type="submit" class="cta-button">Ҳозир пайваст шавед</button>
             </form>
         </div>
     </section>
