@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Регистрация</title>
+    <title>Реестратсия</title>
     <style>
         * {
             margin: 0;
@@ -22,6 +22,8 @@
         }
 
         .login-container {
+            margin-top: 50px;
+            margin-bottom: 50px;
             background-color: #fff;
             padding: 40px;
             border-radius: 8px;
@@ -29,6 +31,8 @@
             width: 100%;
             max-width: 450px;
             text-align: center;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
         }
 
         h1 {
@@ -40,10 +44,13 @@
         form {
             display: flex;
             flex-direction: column;
+            gap: 15px;
         }
 
         .form-field {
             margin-bottom: 15px;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease-out 0.5s forwards;
         }
 
         input[type="text"], input[type="password"], input[type="email"], select {
@@ -69,6 +76,8 @@
             font-size: 16px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease-out 1.5s forwards;
         }
 
         button[type="submit"]:hover {
@@ -78,6 +87,8 @@
         .form-footer {
             margin-top: 20px;
             font-size: 14px;
+            opacity: 0;
+            animation: fadeInUp 0.5s ease-out 2s forwards;
         }
 
         .form-footer a {
@@ -88,31 +99,54 @@
         .form-footer a:hover {
             text-decoration: underline;
         }
+
+        /* Анимация для появления */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body>
     <div class="login-container">
-        <h1>Зарегистрироваться</h1>
+        <h1>Бакайдгири</h1>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             
             <div class="form-field">
-                <label for="username">Имя пользователя</label>
+                <label for="username">Номи корбар</label>
                 {{ form.username }}
             </div>
 
             <div class="form-field">
-                <label for="first_name">Имя</label>
+                <label for="first_name">Ном</label>
                 {{ form.first_name }}
             </div>
 
             <div class="form-field">
-                <label for="last_name">Фамилия</label>
+                <label for="last_name">Номи хонавода</label>
                 {{ form.last_name }}
             </div>
 
             <div class="form-field">
-                <label for="age">Возраст</label>
+                <label for="age">Синн</label>
                 {{ form.age }}
             </div>
 
@@ -122,29 +156,29 @@
             </div>
 
             <div class="form-field">
-                <label for="gender">Пол</label>
+                <label for="gender">Ҷинс</label>
                 {{ form.gender }}
             </div>
 
             <div class="form-field">
-                <label for="status">Статус</label>
+                <label for="status">Вазъият</label>
                 {{ form.status }}
             </div>
 
             <div class="form-field">
-                <label for="password1">Пароль</label>
+                <label for="password1">Калимаи расмӣ</label>
                 {{ form.password1 }}
             </div>
 
             <div class="form-field">
-                <label for="password2">Подтверждение пароля</label>
+                <label for="password2">Такрор кардани калимаи расмӣ</label>
                 {{ form.password2 }}
             </div>
 
-            <button type="submit">Зарегистрироваться</button>
+            <button type="submit">Реестратсия</button>
         </form>
         <div class="form-footer">
-            <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
+            <p>Аллакай ҳисоб доред? <a href="{% url 'login' %}">Вуруд</a></p>
         </div>
     </div>
 </body>

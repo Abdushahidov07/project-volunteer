@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Вуруд</title>
     <style>
         * {
             margin: 0;
@@ -12,29 +12,55 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7fc;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
         }
 
         .login-container {
             background-color: #fff;
             padding: 40px;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 400px;
             text-align: center;
+            opacity: 0;
+            animation: fadeUp 1s ease-out forwards;
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         h1 {
             margin-bottom: 20px;
             font-size: 24px;
             color: #333;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
         form {
@@ -52,12 +78,13 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 16px;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
+            outline: none;
         }
 
         input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
             border-color: #007BFF;
-            outline: none;
+            transform: scale(1.05);
         }
 
         button[type="submit"] {
@@ -68,11 +95,12 @@
             border-radius: 4px;
             font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         button[type="submit"]:hover {
             background-color: #0056b3;
+            transform: translateY(-2px);
         }
 
         .form-footer {
@@ -83,25 +111,44 @@
         .form-footer a {
             color: #007BFF;
             text-decoration: none;
+            transition: color 0.3s ease;
         }
 
         .form-footer a:hover {
+            color: #0056b3;
             text-decoration: underline;
+        }
+
+        /* Анимация для кнопки входа */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        button[type="submit"] {
+            animation: pulse 1.5s infinite ease-in-out;
         }
     </style>
 </head>
 <body>
     <div class="login-container">
-        <h1>Log in</h1>
+        <h1>Вуруд</h1>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-field">
                 {{ form.as_p }}
             </div>
-            <button type="submit">Log in</button>
+            <button type="submit">Вуруд кардан</button>
         </form>
         <div class="form-footer">
-            <p>Don't have an account? <a href="{% url "register" %}">Sign up</a></p>
+            <p>Ҳисоб надоред? <a href="{% url "register" %}">Сарҷамъ кардан</a></p>
         </div>
     </div>
 </body>
