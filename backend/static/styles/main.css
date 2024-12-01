@@ -11,6 +11,99 @@ body {
   color: #2c3e50;
   overflow-x: hidden;
 }
+#missions {
+  position: relative;
+  margin-top: 100px;
+  width: 100%;
+  height: 600px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  object-fit: cover; /* Изображение заполняет контейнер без искажения */
+  z-index: -1;
+  overflow: hidden;
+}
+
+#missions img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  animation: fadeIn 1s ease-in-out forwards; /* Анимация для изображения */
+}
+
+.missions,
+.news,
+.faq {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 80px;
+}
+
+.mission,
+.news article,
+.faq .question {
+  background-color: #ffffffc7;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  height: 150px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: translateY(30px); /* Начальная позиция ниже */
+  animation: fadeInUp 1s ease-out forwards; /* Плавное появление */
+}
+
+.mission h3,
+.news article h3,
+.faq .question h3 {
+  color: #6a3093;
+  margin-bottom: 10px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 1s ease-out 0.5s forwards; /* Анимация для заголовков */
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  margin-top: 50px;
+  position: relative; /* Позиционируем контейнер относительно секции */
+  z-index: 1;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(50px); /* Начальная позиция ниже */
+  animation: fadeInUp 1s ease-out 0.5s forwards; /* Появление контейнера с анимацией */
+}
+
+.section h2 {
+  font-size: 2rem;
+  color: #6a3093;
+  margin-bottom: 20px;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 1s ease-out 1s forwards; /* Появление заголовка */
+}
+
+/* Анимация для появления с движением вверх */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Анимация для плавного появления */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+
 
 /* Hero Section */
 .hero {

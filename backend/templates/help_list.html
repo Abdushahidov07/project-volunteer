@@ -1,158 +1,76 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block title %}Лист помощи{% endblock %}
+
 {% block content %}
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Лист помощи</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 0;
-        }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'styles/listhelp.css' %}">
 
-        h1 {
-            text-align: center;
-            background-color: #4CAF50;
-            color: white;
-            padding: 20px;
-            margin: 0;
-            font-size: 28px;
-        }
+<main>
+    <section class="hero">
+        <div class="hero-content" data-aos="fade-up">
+            <h1>Помогаем друг другу</h1>
+            <p>Платформа для тех, кто готов помочь и тех, кто нуждается в помощи</p>
+        </div>
 
-        h2 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 24px;
-            text-align: center;
-        }
+        <div class="filter-container" data-aos="fade-up" data-aos-delay="200">
+            <div class="category-filter">
+                <label for="categorySelect">Выберите категорию:</label>
+                <form method="get" action="{% url 'help_list' %}">
+                    <select name="category" id="categorySelect">
+                        <option value="">Все</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}" {% if category.id == request.GET.category %} selected {% endif %}>
+                                {{ category.category_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="filter-btn">
+                        <i class="fas fa-filter"></i>
+                        Фильтровать
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
 
-        form {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            margin: 20px auto;
-            max-width: 600px;
-        }
+    <section class="requests">
+        <h2 data-aos="fade-up">Заявки на помощь</h2>
 
-        label {
-            font-size: 18px;
-            margin-right: 10px;
-            color: #333;
-        }
+        <div class="requests-grid">
+            {% for apply_help in apply_helps %}
+                <div class="request-card" data-aos="fade-up">
+                    <div class="request-image">
+                        <img src="{{ apply_help.image.url }}" alt="Заявка">
+                        <div class="category-badge">{{ apply_help.category.category_name }}</div>
+                    </div>
+                    <div class="request-content">
+                        <h3>{{ apply_help.user.username }}</h3>
+                        <div class="request-info">
+                            <span><i class="fas fa-clock"></i> {{ apply_help.created_at }}</span>
+                        </div>
+                        <p class="request-description">{{ apply_help.description }}</p>
+                        <div class="request-actions">
+                            <button class="help-btn">
+                                <i class="fas fa-hand-holding-heart"></i>
+                                Помочь
+                            </button>
+                            <button class="details-btn">
+                                <i class="fas fa-info-circle"></i>
+                                Подробнее
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="no-apply-helps">Нет заявок на помощь по выбранной категории.</p>
+            {% endfor %}
+        </div>
+    </section>
 
-        select {
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            width: 220px;
-            margin-bottom: 15px;
-        }
+</main>
 
-        button {
-            padding: 12px 25px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-left: 10px;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        hr {
-            margin-top: 30px;
-            border: 0;
-            border-top: 1px solid #ddd;
-            margin-bottom: 30px;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        li {
-            background-color: #fff;
-            padding: 20px;
-            margin: 10px 0;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            font-size: 16px;
-        }
-
-        li strong {
-            font-size: 18px;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        li img {
-            margin-top: 10px;
-            border-radius: 5px;
-            width: 120px;
-            height: 120px;
-            object-fit: cover;
-        }
-
-        .no-apply-helps {
-            text-align: center;
-            color: #999;
-            font-size: 18px;
-        }
-
-        .form-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-    </style>
-</head>
-<body>
-    <h1>Лист помощи</h1>
-    <div class="form-container">
-        <form method="get" action="{% url 'help_list' %}">
-            <label for="category">Выберите категорию:</label>
-            <select name="category" id="category">
-                <option value="">Все</option>
-                {% for category in categories %}
-                    <option value="{{ category.id }}" {% if category.id == request.GET.category %} selected {% endif %}>
-                        {{ category.category_name }}
-                    </option>
-                {% endfor %}
-            </select>
-            <button type="submit">Фильтровать</button>
-        </form>
-    </div>
-
-    <hr>
-
-    <h2>Заявки на помощь:</h2>
-    <ul>
-        {% for apply_help in apply_helps %}
-            <li>
-                <strong>{{ apply_help.user.username }}</strong> - {{ apply_help.description }} <br>
-                <strong>Категория:</strong> {{ apply_help.category.category_name }} <br>
-                <strong>Статус:</strong> {{ apply_help.get_status_display }} <br>
-                <img src="{{ apply_help.image.url }}" alt="Image"> <!-- Изображение заявки -->
-            </li>
-        {% empty %}
-            <p class="no-apply-helps">Нет заявок на помощь по выбранной категории.</p>
-        {% endfor %}
-    </ul>
-</body>
-</html>
-{% endblock content %}
+{% endblock %}

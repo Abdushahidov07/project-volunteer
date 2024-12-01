@@ -18,16 +18,21 @@
             <div class="logo">VolunteerHub</div>
             <div class="nav-links">
                 <a href="{% url "home" %}">Home</a>
-                <li><a href="{% url "missing_person_list" %}">List missing</a></li>
-                <a href="#impact">Our Impact</a>
+                <a href="{% url "missing_person_list" %}">List missing</a>
+                <a href="{% url "help_list" %}">Help list</a>
+                <a href="#impact"></a>
                 <a href="#stories">Stories</a>
                 {% if user.is_authenticated %}
                     <a href="accounts/logout" class="join-btn">Log out</a>
                 {% else %}
                     <a href="{% url "login" %}" class="join-btn">Log in</a>
                 {% endif %}
-                <img src="{% static "images/user.jpg" %}" alt="image" style="width: 60px; height: 60px; border-radius: 50%;">
-                <a href="">{{user.username}}</a>
+                {% if user.image %}
+                <img src="{{ user.image.url }}" alt="image" style="width: 60px; height: 60px; border-radius: 50%;">
+                {% else %}
+                <img src="{% static 'images/user.jpg' %}" alt="image" style="width: 60px; height: 60px; border-radius: 50%;">
+                {% endif %}
+                <a href="{% url "profile" user.id%}">{{user.username}}</a>
             </div>
         </nav>
     </header>

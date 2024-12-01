@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static "styles/profilestyile.css" %}">
+<main class="profile-container">
+    <div class="profile-header">
+        <div class="profile-avatar">
+            {% if user.image %}
+            <img src="{{ user.image.url }}" alt="Volunteer Avatar">
+            {% else %}
+            <img src="{% static 'images/user.jpg' %}" alt="Volunteer Avatar">
+            {% endif %}
+        </div>
+        <div class="profile-info">
+            <h2>{{user.first_name}} {{user.last_name}}</h2>
+            <p class="volunteer-status">Senior Volunteer</p>
+            <div class="badges">
+                <span class="badge">Environmental Hero</span>
+                <span class="badge">Community Leader</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-details">
+        <div class="mission-section">
+            <h3>My Volunteer Mission</h3>
+            <p>"Dedicated to creating positive change through community service and environmental conservation. Together, we can make our world a better place."</p>
+        </div>
+
+        <div class="impact-section">
+            <div class="impact-item">
+                <span class="impact-number">120+</span>
+                <span class="impact-label">Volunteer Hours</span>
+            </div>
+            <div class="impact-item">
+                <span class="impact-number">25</span>
+                <span class="impact-label">Projects Led</span>
+            </div>
+            <div class="impact-item">
+                <span class="impact-number">500+</span>
+                <span class="impact-label">Lives Impacted</span>
+            </div>
+        </div>
+
+        <div class="causes-section">
+            <h3>Causes I Support</h3>
+            <div class="causes-grid">
+                <div class="cause-item">
+                    <span class="cause-icon">🌱</span>
+                    <span class="cause-name">Environmental</span>
+                </div>
+                <div class="cause-item">
+                    <span class="cause-icon">📚</span>
+                    <span class="cause-name">Education</span>
+                </div>
+                <div class="cause-item">
+                    <span class="cause-icon">🏥</span>
+                    <span class="cause-name">Healthcare</span>
+                </div>
+                <div class="cause-item">
+                    <span class="cause-icon">🏠</span>
+                    <span class="cause-name">Housing</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="upcoming-events">
+            <h3>Upcoming Events</h3>
+            <div class="event-list">
+                <div class="event-item">
+                    <div class="event-date">MAR 15</div>
+                    <div class="event-details">
+                        <h4>Beach Cleanup Drive</h4>
+                        <p>Leading a team of 20 volunteers</p>
+                    </div>
+                </div>
+                <div class="event-item">
+                    <div class="event-date">MAR 22</div>
+                    <div class="event-details">
+                        <h4>Youth Mentoring Workshop</h4>
+                        <p>Sharing experiences with new volunteers</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock content %}

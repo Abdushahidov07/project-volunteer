@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import *
 from .models import *
 import json
 from django.views.decorators.csrf import csrf_exempt
@@ -26,19 +26,23 @@ from rest_framework.decorators import api_view
 from django.contrib.auth.models import User
 import json
 
+
+class UserDetailView(DetailView):
+    model = CustomUser
+    template_name = "profile.html"
+
+
 @api_view(['GET', 'POST'])
 def message_list(request, missing_person_id):
     if request.method == 'GET':
-        # Получаем все сообщения для определенного пропавшего человека
         messages = Message.objects.filter(missing_person_id=missing_person_id).order_by('-timestamp')
         serializer = MessageSerializer(messages, many=True)
         return JsonResponse({'messages': serializer.data})
 
     elif request.method == 'POST':
-        # Получаем сообщение из запроса
         data = json.loads(request.body)
         text = data.get('message')
-        user = User.objects.get(id=data.get('user_id'))  # Предполагаем, что передается id пользователя
+        user = User.objects.get(id=data.get('user_id')) 
         missing_person = MissingPerson.objects.get(id=missing_person_id)
 
         # Создаем новое сообщение
@@ -179,7 +183,6 @@ def get_active_user_locations(request):
 def login(request):
     return redirect("accounts/login")
     
-
 
 
 @login_required

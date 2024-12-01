@@ -8,6 +8,7 @@ urlpatterns = [
     path("", views.Home, name="overview"),
     path("home", views.Home, name="home"),
     path('index', views.index, name='index'),
+    path("profile/<int:pk>", views.UserDetailView.as_view(), name="profile"),
     path('volunteers/', views.get_volunteers, name='get_volunteers'),
     path('markers/', views.get_markers, name='get_markers'),
     path('missingpl/<int:person_id>', views.show_missing_person_map, name='missingpl'),
