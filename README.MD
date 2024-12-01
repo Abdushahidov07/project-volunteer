@@ -160,8 +160,6 @@ Join forces with other volunteers to support those in need.
 - 🤝 **Social support:**  
   Collaborate with volunteers to help those in need.
 
-
-
 ---
 
 
