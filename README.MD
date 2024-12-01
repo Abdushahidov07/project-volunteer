@@ -145,9 +145,6 @@ Volunteers can register and offer assistance to the sick.
 Join forces with other volunteers to support those in need.  
 
 ---
-
----
-
 ## 🇬🇧 **Interface in English**
 
 ### 📋 **Features:**
