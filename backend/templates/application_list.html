@@ -1,3 +1,6 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,103 +8,196 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Application List</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
+        /* General Reset */
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        header {
-            background-color: #007bff;
-            color: #fff;
-            padding: 1rem;
-            text-align: center;
+
+        body {
+            background-color: #f7f9fc;
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+            height: 100vh;
+            animation: fadeIn 1s ease-in-out;
         }
-        
+
+        /* Fade-in animation for page load */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
         .container {
-            max-width: 900px;
-            margin: 2rem auto;
-            padding: 1rem;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 1000px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 1s ease-out;
+            margin: auto;
+            margin-top: 100px;
+            margin-bottom: 50px;
         }
+
+        /* Animation for the form container */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
+
         .form-group label {
             font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 8px;
         }
+
         .form-group input {
             width: 100%;
-            padding: 0.5rem;
-            margin-top: 0.5rem;
+            padding: 12px;
+            border-radius: 8px;
             border: 1px solid #ddd;
-            border-radius: 4px;
+            background-color: #f9f9f9;
+            font-size: 1rem;
+            transition: all 0.3s ease;
         }
+
+        .form-group input:focus {
+            border-color: #2196F3;
+            background-color: #ffffff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(33, 150, 243, 0.4);
+        }
+
         .btn {
-            display: inline-block;
-            padding: 0.5rem 1rem;
+            padding: 12px 24px;
+            background-color: #2196F3;
             color: #fff;
-            background: #007bff;
             border: none;
-            border-radius: 4px;
-            text-decoration: none;
+            border-radius: 8px;
             text-align: center;
+            text-decoration: none;
+            font-size: 1rem;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
+
         .btn:hover {
-            background: #0056b3;
+            background-color: #1976D2;
+            transform: translateY(-3px);
         }
+
         table {
             width: 100%;
+            margin-top: 2rem;
             border-collapse: collapse;
-            margin-top: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-in-out;
         }
-        table, th, td {
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
             border: 1px solid #ddd;
         }
-        th, td {
-            padding: 0.75rem;
-            text-align: left;
-        }
+
         th {
-            background-color: #007bff;
+            background-color: #2196F3;
             color: white;
+            font-size: 1.1rem;
         }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+            transform: scale(1.02);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
         .pagination {
             display: flex;
             justify-content: center;
-            margin-top: 1rem;
+            margin-top: 2rem;
         }
+
         .pagination a {
-            margin: 0 0.25rem;
-            padding: 0.5rem 0.75rem;
-            color: #007bff;
+            padding: 10px 20px;
+            color: #2196F3;
             text-decoration: none;
             border: 1px solid #ddd;
             border-radius: 4px;
+            margin: 0 5px;
+            transition: all 0.3s ease;
         }
+
         .pagination a:hover {
-            background: #f0f0f0;
+            background-color: #f0f0f0;
+            transform: translateY(-2px);
         }
+
         .pagination .current {
-            margin: 0 0.25rem;
-            padding: 0.5rem 0.75rem;
-            background: #007bff;
+            background-color: #2196F3;
             color: white;
             border: 1px solid #ddd;
+            padding: 10px 20px;
             border-radius: 4px;
         }
+
+        .pagination .current:hover {
+            background-color: #1976D2;
+        }
+
+        .pagination a:active {
+            transform: scale(0.98);
+        }
+
     </style>
 </head>
 <body>
-    <header>
-        <h1>Application List</h1>
-    </header>
+
     <div class="container">
-        <form method="get">
+        <h1>Application List</h1>
+        <form method="get" style="margin-bottom: 2rem;">
             <div class="form-group">
                 <label for="user">Search by User</label>
                 <input type="text" id="user" name="user" value="{{ search_user }}">
@@ -111,7 +207,7 @@
                 <input type="text" id="status" name="status" value="{{ search_status }}">
             </div>
             <button type="submit" class="btn">Search</button>
-            <a href="{% url 'application_list' %}" class="btn">Clear</a>
+            <a href="{% url 'application_list' %}" class="btn" style="background-color: #f44336;">Clear</a>
         </form>
 
         <table>
@@ -133,7 +229,7 @@
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="4">No applications found.</td>
+                        <td colspan="4" style="text-align: center; color: #888;">No applications found.</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -145,7 +241,7 @@
                     <a href="?page=1&user={{ search_user }}&status={{ search_status }}">First</a>
                     <a href="?page={{ page_obj.previous_page_number }}&user={{ search_user }}&status={{ search_status }}">Previous</a>
                 {% endif %}
-
+                
                 <span class="current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
 
                 {% if page_obj.has_next %}
@@ -157,3 +253,4 @@
     </div>
 </body>
 </html>
+{% endblock content %}

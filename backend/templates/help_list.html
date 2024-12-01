@@ -28,7 +28,7 @@
                             </option>
                         {% endfor %}
                     </select>
-                    <button type="submit" class="filter-btn">
+                    <button type="submit" class="filter-btn" style="margin-top: 10px;">
                         <i class="fas fa-filter"></i>
                         Фильтровать
                     </button>
@@ -54,10 +54,15 @@
                         </div>
                         <p class="request-description">{{ apply_help.description }}</p>
                         <div class="request-actions">
+
+                            {% if user.status == 'валантер' %}
+                            <a href="{% url "application_create" apply_help.id%}" class="help-btn">
                             <button class="help-btn">
                                 <i class="fas fa-hand-holding-heart"></i>
                                 Помочь
                             </button>
+                            </a>
+                            {% endif %}
                             <button class="details-btn">
                                 <i class="fas fa-info-circle"></i>
                                 Подробнее

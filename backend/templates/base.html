@@ -18,12 +18,17 @@
             <div class="logo">VolunteerHub</div>
             <div class="nav-links">
                 <a href="{% url "home" %}">Home</a>
+                {% if user.status == 'валантер' %}
                 <a href="{% url "missing_person_list" %}">List missing</a>
                 <a href="{% url "help_list" %}">Help list</a>
                 <a href="#impact"></a>
+                {% elif user.status == 'Нуждающийся' %}
+                <a href="{% url "applyhelp_create" %}">Create Helpapply</a>
+                <a href="{% url "help_list1" %}">Help list</a>
+                {% endif %}
                 <a href="#stories">Stories</a>
                 {% if user.is_authenticated %}
-                    <a href="accounts/logout" class="join-btn">Log out</a>
+                    <a href="{% url "logout" %}" class="join-btn">Log out</a>
                 {% else %}
                     <a href="{% url "login" %}" class="join-btn">Log in</a>
                 {% endif %}

@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <title>Создание заявки на помощь</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 40px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        input, select, textarea {
+            font-size: 1em;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="file"] {
+            padding: 3px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: center;
+        }
+
+        .form-footer a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 1.1em;
+            margin-top: 20px;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.9em;
+            margin-top: -15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Создание заявки на помощь</h1>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Поле для выбора пользователя -->
+            <label for="id_user">Пользователь:</label>
+            {{ form.user }}
+
+            <!-- Поле для описания -->
+            <label for="id_description">Описание:</label>
+            {{ form.description }}
+            <!-- Поле для изображения -->
+            <label for="id_image">Изображение (необязательно):</label>
+            {{ form.image }}
+
+            <!-- Поле для выбора категории -->
+            <label for="id_category">Категория:</label>
+            {{ form.category }}
+
+            <!-- Поле для статуса -->
+            <label for="id_status">Статус:</label>
+            {{ form.status }}
+
+            <!-- Поле для активности -->
+            <label for="id_is_active">Активность:</label>
+            {{ form.is_active }}
+
+            <!-- Кнопка отправки формы -->
+            <div class="form-footer">
+                <button type="submit">Создать заявку</button>
+            </div>
+        </form>
+
+        {% if form.errors %}
+            <div class="error-message">
+                <ul>
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <div class="form-footer">
+            <a href="{% url 'help_list' %}">Перейти к списку заявок</a>
+        </div>
+    </div>
+
+{% endblock content %}

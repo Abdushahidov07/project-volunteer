@@ -5,6 +5,8 @@ from . import views
 
 urlpatterns = [
     path("login", views.login, name="login"),
+    path("logout", views.logout, name="logout"),
+
     path("", views.Home, name="overview"),
     path("home", views.Home, name="home"),
     path('index', views.index, name='index'),
@@ -26,13 +28,14 @@ urlpatterns = [
 
     # APPLY HELP URLS
     path('help_list/', HelpListView.as_view(), name='help_list'),
+    path('help_list1/', HelpListViewUser.as_view(), name='help_list1'),
     path('applyhelps/create/', ApplyHelpCreateView.as_view(), name='applyhelp_create'),
     path('applyhelps/<int:pk>/update/', ApplyHelpUpdateView.as_view(), name='applyhelp_update'),
     path('applyhelps/<int:pk>/delete/', ApplyHelpDeleteView.as_view(), name='applyhelp_delete'),
 
     # APPLICATION URLS
     path('applications/', ApplicationListView.as_view(), name='application_list'),
-    path('applications/create/', ApplicationCreateView.as_view(), name='application_create'),
+    path('create-application/<int:applay_id>/', ApplicationCreateView.as_view(), name='application_create'),    
     path('applications/<int:pk>/update/', ApplicationUpdateView.as_view(), name='application_update'),
     path('applications/<int:pk>/delete/', ApplicationDeleteView.as_view(), name='application_delete'),
     # CHARITY COMPANY URLS

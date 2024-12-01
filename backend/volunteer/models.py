@@ -77,6 +77,7 @@ class ApplicationCharity(models.Model):
         ("завершино", "Завершино"),
         ("впроцессе", "Впроцессе"),
     )
+    category =  models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     company_charity= models.ForeignKey(CharityCompany, on_delete=models.CASCADE) 
     description = models.TextField()

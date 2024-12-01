@@ -185,6 +185,10 @@ def login(request):
     
 
 
+def logout(request):
+    return redirect("accounts/logout")
+    
+
 @login_required
 def view_missing_person(request, person_id):
     missing_person = get_object_or_404(MissingPerson, id=person_id)
@@ -348,13 +352,21 @@ class CategoryDeleteView(DeleteView):
 class ApplyHelpCreateView(LoginRequiredMixin, CreateView):
     model = ApplyHelp
     template_name = 'applyhelp_form.html'
-    fields = ['user', 'description', 'image', 'category', 'status', 'is_active']
+    fields = ['description', 'image', 'category', 'is_active']  # Убираем 'user'
     success_url = reverse_lazy('help_list')
 
     def form_valid(self, form):
+        # Проверка на статус пользователя
         if self.request.user.status != 'Нуждающийся':
             return HttpResponseForbidden("У вас нет прав для создания заявки.")
+        
+        # Устанавливаем пользователя, который создает заявку
         form.instance.user = self.request.user
+
+        # Устанавливаем статус заявки, если он не указан
+        if not form.instance.status:
+            form.instance.status = 'В процессе'  # или любой другой статус по умолчанию
+        
         return super().form_valid(form)
 
 
@@ -370,15 +382,30 @@ class HelpListView(LoginRequiredMixin, ListView):
         queryset = ApplyHelp.objects.all()
         
         if user_status == 'валантер':
-            queryset = queryset.filter(user=self.request.user)  # Заявки только от текущего волонтера
-        elif user_status == 'нуждающийся':
-            queryset = queryset.filter(is_active=True)  # Только активные заявки для нуждающихся
+            queryset = queryset.filter(is_active=True)  # Заявки только от текущего волонтера
+        elif user_status == 'Нуждающийся':
+            queryset = queryset.filter(user=self.request.user)  # Только активные заявки для нуждающихся
 
         category_filter = self.request.GET.get('category', None)
         if category_filter:
             queryset = queryset.filter(category__id=category_filter)
         
         return queryset
+
+class HelpListViewUser(LoginRequiredMixin, ListView):
+    model = ApplyHelp
+    template_name = 'help_list.html'
+    context_object_name = 'apply_helps'
+
+    def get_queryset(self):
+        # Фильтруем заявки, чтобы показывать только те, которые созданы текущим пользователем
+        queryset = ApplyHelp.objects.filter(user=self.request.user)
+        
+        category_filter = self.request.GET.get('category', None)
+        if category_filter:
+            queryset = queryset.filter(category__id=category_filter)
+        return queryset
+
 
 
     def get_context_data(self, **kwargs):
@@ -426,7 +453,6 @@ class ApplicationListView(ListView):
     template_name = 'application_list.html'
     context_object_name = 'applications'
     paginate_by = 10  # Optional: Enables pagination with 10 items per page
-
     def get_queryset(self):
         queryset = super().get_queryset()
         user_query = self.request.GET.get('user', '').strip()
@@ -448,13 +474,31 @@ class ApplicationListView(ListView):
         return context
     
 
+from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
+from django.http import HttpResponseForbidden
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import ApplyHelp, Application
 
-class ApplicationCreateView(CreateView):
+class ApplicationCreateView(LoginRequiredMixin, CreateView):
     model = Application
     template_name = 'application_form.html'
-    fields = ['user', 'applay', 'description', 'status', 'is_active']
+    fields = ['description',]  
     success_url = reverse_lazy('application_list')
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user        
+        applay_id = self.kwargs.get('applay_id')
+        if applay_id:
+            applay = get_object_or_404(ApplyHelp, pk=applay_id)
+            form.instance.applay = applay
+        else:
+            return HttpResponseForbidden("Заявка не найдена или отсутствует")
+
+        form.instance.status = 'впроцессе'
+
+        # Далее сохраняем форму
+        return super().form_valid(form)
 
 class ApplicationUpdateView(UpdateView):
     model = Application
@@ -503,11 +547,22 @@ class ApplicationCharityListView(ListView):
     context_object_name = 'application_charities'
 
 
+from django.http import HttpResponseForbidden
+
 class ApplicationCharityCreateView(CreateView):
     model = ApplicationCharity
     template_name = 'applicationcharity_form.html'
-    fields = ['user', 'company_charity', 'description', 'status', 'is_active']
+    fields = ['description','category'] 
     success_url = reverse_lazy('applicationcharity_list')
+
+    def form_valid(self, form):
+        # Проверка на статус пользователя
+        if self.request.user.status != 'Нуждающийся':
+            return HttpResponseForbidden("У вас нет прав для создания заявки.")
+        
+        form.instance.user = self.request.user
+        form.instance.status = 'впроцессе'
+        return super().form_valid(form)
 
 
 class ApplicationCharityUpdateView(UpdateView):

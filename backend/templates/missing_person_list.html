@@ -7,20 +7,20 @@
 
 <main>
     <!-- Hero Section (Главная секция) -->
-    <section id="home" class="hero">
+    <section id="home" class="hero" style="margin-top: 130px;">
         <div class="hero-content">
             <h1 data-aos="fade-up">Поможем найти пропавших людей</h1>
-            <p data-aos="fade-up" data-aos-delay="200">Каждая минута важна. Вместе мы можем помочь найти тех, кто пропал.</p>
+            <p data-aos="fade-up" data-aos-delay="200" style="font-size: 25px;">Каждая минута важна. Вместе мы можем помочь найти тех, кто пропал.</p>
         </div>
         <div class="search-box" data-aos="fade-up" data-aos-delay="400">
             <form method="GET" action="{% url 'missing_person_list' %}">
                 <div class="date-filters">
                     <div class="date-input">
-                        <label for="dateFrom">Дата с:</label>
+                        <label for="dateFrom" style="color: black;">Дата с:</label>
                         <input type="date" name="date_from" id="dateFrom" value="{{ request.GET.date_from }}">
                     </div>
                     <div class="date-input">
-                        <label for="dateTo">Дата по:</label>
+                        <label for="dateTo" style="color: black;">Дата по:</label>
                         <input type="date" name="date_to" id="dateTo" value="{{ request.GET.date_to }}">
                     </div>
                     <button type="submit" class="search-btn">

@@ -15,7 +15,6 @@ body {
 /* Главная секция (Hero) */
 .hero {
   background: linear-gradient(135deg, #3a8dff, #6a11cb);
-  margin-top: -150px;
   color: white;
   padding: 80px 20px;
   text-align: center;
